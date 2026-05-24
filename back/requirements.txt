@@ -1,0 +1,8 @@
+Django==6.0.5
+python-dotenv
+mysqlclient
+djangorestframework
+bcrypt
+djangorestframework-simplejwt
+django-cors-headers
+python-dotenv
