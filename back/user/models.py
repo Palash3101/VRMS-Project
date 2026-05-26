@@ -1,5 +1,12 @@
 from django.db import models
 
+def generate_custom_userid():
+    import secrets
+    import string
+
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(10))
+
 class User(models.Model):
     
     class RoleChoices(models.TextChoices):
@@ -7,7 +14,7 @@ class User(models.Model):
         CUSTOMER = 'customer', 'Customer'
         VENDOR = 'vendor', 'Vendor'
 
-    userid = models.CharField(max_length=10, primary_key=True)
+    userid = models.CharField(max_length=10, primary_key=True, default=generate_custom_userid, editable=False)
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
