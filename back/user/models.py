@@ -1,11 +1,5 @@
 from django.db import models
-
-def generate_custom_userid():
-    import secrets
-    import string
-
-    alphabet = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(alphabet) for _ in range(10))
+import back.helpers as helper
 
 class User(models.Model):
     
@@ -14,7 +8,12 @@ class User(models.Model):
         CUSTOMER = 'customer', 'Customer'
         VENDOR = 'vendor', 'Vendor'
 
-    userid = models.CharField(max_length=10, primary_key=True, default=generate_custom_userid, editable=False)
+    userid = models.CharField(
+        max_length=10, 
+        primary_key=True, 
+        default=lambda: helper.generate_custom_userid(10), 
+        editable=False
+    )
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
@@ -43,3 +42,47 @@ class User(models.Model):
     REQUIRED_FIELDS = ['username', 'role']
 
     USERNAME_FIELD = 'email'
+
+
+class Vendor(models.Model):
+    vendorid = models.OneToOneField(
+        'user.User',
+        to_field='userid',
+        db_column='vendorid',
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+
+    company_name = models.CharField(max_length=255)
+    gst_number = models.CharField(max_length=20)
+    status = models.CharField(max_length=9, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending')
+    document_path = models.CharField(max_length=255)
+    
+    class Meta:
+        db_table='vendor'
+        managed = False
+
+    def __str__(self):
+        return self.vendorid
+
+
+class Customer(models.Model):
+    customerid = models.OneToOneField(
+        'user.User',
+        to_field='userid',
+        db_column='customerid',
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+
+    is_active = models.BooleanField(default=True)
+    phone = models.CharField(max_length=20)
+    address = models.TextField()
+    name = models.CharField(max_length=255)
+    
+    class Meta:
+        db_table='customer'
+        managed = False
+
+    def __str__(self):
+        return self.customerid

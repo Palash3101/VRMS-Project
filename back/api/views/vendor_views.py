@@ -5,9 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsAdmin
 
 from api.serializers import vendor_serializers
-from vendor.models import Vendor
+from user.models import Vendor
 
 class VendorListView(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
 
     def get(self, request):
         vendors = Vendor.objects.all()
