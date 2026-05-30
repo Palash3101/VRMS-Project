@@ -1,4 +1,4 @@
-def generate_custom_userid(n):
+def generate_custom_id(n):
     import secrets
     import string
 

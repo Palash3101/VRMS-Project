@@ -9,9 +9,9 @@ class User(models.Model):
         VENDOR = 'vendor', 'Vendor'
 
     userid = models.CharField(
-        max_length=10, 
+        max_length=8, 
         primary_key=True, 
-        default=lambda: helper.generate_custom_userid(10), 
+        default=lambda: helper.generate_custom_id(8), 
         editable=False
     )
     username = models.CharField(max_length=255)
@@ -63,7 +63,7 @@ class Vendor(models.Model):
         managed = False
 
     def __str__(self):
-        return self.vendorid
+        return f"{self.company_name} (Vendor ID: {self.pk})"
 
 
 class Customer(models.Model):
@@ -85,4 +85,4 @@ class Customer(models.Model):
         managed = False
 
     def __str__(self):
-        return self.customerid
+        return f"{self.name} (Customer ID: {self.pk})"

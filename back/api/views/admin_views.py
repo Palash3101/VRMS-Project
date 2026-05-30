@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsAdmin
 
-from api.serializers import vendor_serializers
-from user.models import Vendor
+from api.serializers import vendor_serializers, order_serializers,customer_serializers
+from user.models import Customer, Vendor
+from orders.models import Order
 
 class VendorListView(APIView):
     permission_classes = [IsAuthenticated, IsAdmin]
@@ -35,4 +36,26 @@ class VendorListView(APIView):
         except Vendor.DoesNotExist:
             return Response({'error': 'Vendor not found'}, status=404)
 
+
+class OrderListView(APIView):
+    # permission_classes = [IsAuthenticated, IsAdmin]
+    
+
+    def get(self, request):
+        orders = Order.objects.all()
+        search_filter = request.query_params.get('status', None)
+        if search_filter:
+            orders = orders.filter(status=search_filter)
         
+        serializer = order_serializers.OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+class CustomerListView(APIView):
+    # permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        customers = Customer.objects.all()
+        serializer = customer_serializers.CustomerSerializer(customers, many=True)
+        return Response(serializer.data)
+
+

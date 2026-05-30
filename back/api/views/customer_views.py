@@ -6,11 +6,16 @@ from api.permissions import IsAdmin
 
 from api.serializers import customer_serializers
 from user.models import Customer
+# from inquiries.models import Inquiries
 
-class CustomerListView(APIView):
+class CustomerDetailView(APIView):
     # permission_classes = [IsAuthenticated, IsAdmin]
 
-    def get(self, request):
-        customers = Customer.objects.all()
-        serializer = customer_serializers.CustomerSerializer(customers, many=True)
-        return Response(serializer.data)
+    def get(self, request, customer_id):
+        try:
+            customer = Customer.objects.get(customerid=customer_id)
+            serializer = customer_serializers.CustomerDetailSerializer(customer)
+            return Response(serializer.data)
+        
+        except Customer.DoesNotExist:
+            return Response({'error': 'Customer not found'}, status=404)

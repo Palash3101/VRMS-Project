@@ -6,5 +6,18 @@ class IsAdmin(BasePermission):
     Custom permission to only allow access to users with the 'admin' role.
     """
     def has_permission(self, request, view):
-        # Check if the user exists, is logged in, and has the 'admin' role string
-        return bool(request.user and request.user.is_authenticated and request.user.role == 'admin')
+        return request.user.is_authenticated and request.user.role == 'admin'
+
+class IsVendor(BasePermission):
+    """
+    Custom permission to only allow access to users with the 'vendor' role.
+    """
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role == 'vendor'
+
+class IsCustomer(BasePermission):
+    """
+    Custom permission to only allow access to users with the 'customer' role.
+    """
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role == 'customer'

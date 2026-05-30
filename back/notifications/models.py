@@ -3,7 +3,7 @@ import back.helpers as helper
 
 # Create your models here.
 class Notification(models.Model):
-    id = models.CharField(default=helper.generate_custom_userid(30), primary_key=True, max_length=20, editable=False)
+    id = models.CharField(default=helper.generate_custom_id(30), primary_key=True, max_length=20, editable=False)
     recipientid = models.ForeignKey(
         'user.User',
         to_field='userid',

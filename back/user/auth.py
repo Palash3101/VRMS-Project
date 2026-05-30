@@ -13,13 +13,11 @@ class CustomAuth(BaseBackend):
 
         try:
             user = User.objects.get(Q(email=login_identifier) | Q(username=login_identifier))
-            print(user)
         except User.DoesNotExist:
             return None
 
 
         if check_password(password, user.password):
-            print("Password is correct")
             return user
                 
         return None
