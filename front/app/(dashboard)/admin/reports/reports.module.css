@@ -1,0 +1,311 @@
+/* ─── Page Shell ─────────────────────────────────────────────── */
+.page {
+  padding: 40px 48px 80px;
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+/* ─── Toolbar ─────────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin: 0 0 6px;
+}
+
+.sub {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ─── Export Row ──────────────────────────────────────────────── */
+.exportRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exportBtn {
+  height: 44px;
+  padding: 0 20px;
+  gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.exportBtn:hover {
+  background: var(--color-surface);
+  border-color: var(--color-dark);
+}
+
+/* ─── Date Select ─────────────────────────────────────────────── */
+.dateSelect {
+  height: 44px;
+  padding: 0 36px 0 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239B9B9B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.dateSelect:focus {
+  border-color: var(--color-dark);
+}
+
+/* ─── Stat Strip ──────────────────────────────────────────────── */
+.statStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 32px;
+  background: var(--color-bg);
+}
+
+.statTile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 24px;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.statTile:hover {
+  background: var(--color-surface);
+}
+
+.statTileActive {
+  background: var(--color-surface);
+}
+
+.statActiveDot {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+/* ─── Chart Grid ──────────────────────────────────────────────── */
+.chartGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.chartPanel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chartTitle {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-muted);
+  margin: 0 0 20px;
+}
+
+/* ─── Table Section ───────────────────────────────────────────── */
+.tableSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHeading {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+/* ─── Table ───────────────────────────────────────────────────── */
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.row {
+  transition: background 0.1s;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+.td {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.row:last-child .td {
+  border-bottom: none;
+}
+
+/* ─── Vendor Cell ─────────────────────────────────────────────── */
+.vendorCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+
+.vendorName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ─── Revenue Cell ────────────────────────────────────────────── */
+.revenueValue {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.2px;
+}
+
+.revenueZero {
+  color: var(--color-muted);
+  font-weight: 400;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+/* ─── Metric Bar Cell ─────────────────────────────────────────── */
+.metricCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.metricBar {
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.metricNum {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 16px;
+}
+
+/* ─── Table Footer ────────────────────────────────────────────── */
+.tableFooter {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 10px 20px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}

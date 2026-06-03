@@ -1,0 +1,153 @@
+/* ─── Bar shell ─────────────────────────────────────────────────────────── */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 60px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ─── Left cluster ───────────────────────────────────────────────────────── */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  height: 100%;
+}
+
+/* Wordmark */
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  text-decoration: none;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.accent {
+  color: var(--color-primary);
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 2px;
+}
+
+.navLink {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: color 0.15s ease;
+  /* Bottom indicator — hidden by default */
+  border-bottom: 2px solid transparent;
+  /* Offset the bar's bottom border so active indicator sits flush */
+  margin-bottom: -1px;
+}
+
+.navLink:hover {
+  color: var(--color-text);
+}
+
+/* Active state: dark text + yellow bottom bar */
+.navLinkActive {
+  color: var(--color-text);
+  border-bottom-color: var(--color-primary);
+}
+
+/* ─── Right cluster ──────────────────────────────────────────────────────── */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Bell button */
+.iconBtn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.iconBtn:hover {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Notification count badge */
+.notifBadge {
+  position: absolute;
+  top: 5px;
+  right: 4px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  background: var(--color-primary);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* User avatar */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+  margin-left: 4px;
+  transition: opacity 0.12s ease;
+}
+
+.avatar:hover {
+  opacity: 0.85;
+}

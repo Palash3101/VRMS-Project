@@ -1,0 +1,442 @@
+/* ─────────────────────────────────────────────────────────────
+   Admin → Orders   orders.module.css
+   Locked patterns copied verbatim from vendors / customers / leads.
+   New classes: toolbar · orderCell · orderNo · orderMeta ·
+                amountCell · dateText · cancelBtn · dateSelect
+   RULES: no hex in property values, no @import, no :root
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Page shell ───────────────────────────────────────────── */
+.page {
+  padding: 32px 40px 80px;
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-muted);
+  line-height: 1;
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ── Stat strip ───────────────────────────────────────────── */
+.statStrip {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: var(--color-bg);
+}
+
+.statTile {
+  flex: 1;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.statTile:hover {
+  background: var(--color-surface);
+}
+
+.statTileActive {
+  background: var(--color-surface);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+.statActiveDot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+}
+
+/* ── Filter pill group ────────────────────────────────────── */
+.filterGroup {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 2px;
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+.filterTab {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterCount {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(155, 155, 155, 0.18);
+  color: inherit;
+  border-radius: var(--radius-full);
+  padding: 1px 6px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.filterTabActive .filterCount {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Toolbar (search + date select) ──────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Search input ─────────────────────────────────────────── */
+.searchWrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 268px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  pointer-events: none;
+  display: flex;
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px 0 38px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ── Date select (new — identical anatomy to assignSelect in Leads) */
+.dateSelect {
+  height: 40px;
+  padding: 0 32px 0 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239B9B9B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.15s;
+}
+
+.dateSelect:focus {
+  border-color: var(--color-dark);
+}
+
+/* ── Table wrapper ────────────────────────────────────────── */
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.thead {
+  background: var(--color-surface);
+}
+
+.th {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 12px 20px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.row {
+  background: var(--color-bg);
+  transition: background 0.1s;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+.row:last-child .td {
+  border-bottom: none;
+}
+
+.td {
+  padding: 16px 20px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Order cell (new) ─────────────────────────────────────── */
+.orderCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.orderNo {
+  display: inline-flex;
+}
+
+.orderNoChip {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  letter-spacing: 0.02em;
+}
+
+.orderMeta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+/* ── Amount cell (new) ────────────────────────────────────── */
+.amountCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.amountPrimary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.amountGst {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+/* ── Status / payment badge ───────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ── Date text (new) ──────────────────────────────────────── */
+.dateText {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ── Action buttons ───────────────────────────────────────── */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewBtn {
+  height: 32px;
+  padding: 0 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.viewBtn:hover {
+  border-color: var(--color-dark);
+  color: var(--color-text);
+}
+
+/* Cancel button (new) */
+.cancelBtn {
+  height: 32px;
+  padding: 0 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.cancelBtn:hover {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+/* ── Empty state ──────────────────────────────────────────── */
+.emptyState {
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.emptyGlyph {
+  font-size: 28px;
+  color: var(--color-border);
+  display: block;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.emptyTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.emptyHint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ── Table footer ─────────────────────────────────────────── */
+.tableFooter {
+  background: var(--color-surface);
+  padding: 12px 20px;
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}

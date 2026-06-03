@@ -1,0 +1,519 @@
+/* ─── Page Layout ───────────────────────────────────────────────────────── */
+.page {
+  padding: 32px 40px 64px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ─── Search ─────────────────────────────────────────────────────────────── */
+.searchWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchWrap svg {
+  position: absolute;
+  left: 12px;
+  color: var(--color-muted);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.searchWrap input {
+  width: 268px;
+  height: 44px;
+  padding: 0 12px 0 38px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.searchWrap input::placeholder {
+  color: var(--color-muted);
+}
+
+.searchWrap input:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ─── Filter Pills ───────────────────────────────────────────────────────── */
+.filterGroup {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 2px;
+}
+
+.filterTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.12s;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterTabActive:hover {
+  color: #fff;
+}
+
+.filterCount {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+/* ─── Stat Strip ─────────────────────────────────────────────────────────── */
+.statStrip {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg);
+  margin-bottom: 24px;
+}
+
+.statTile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 24px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.12s;
+}
+
+.statTile:hover {
+  background: var(--color-surface);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.statLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.statActiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* ─── Table Wrapper ──────────────────────────────────────────────────────── */
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.thead {
+  background: var(--color-surface);
+}
+
+.th {
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.row {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+.td {
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.row.lastRow .td {
+  border-bottom: none;
+}
+
+/* ─── Monospace Chip — Rule #15 ──────────────────────────────────────────── */
+.monoChip {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  color: var(--color-text);
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ─── Customer Cell (avatar + name + contact) ────────────────────────────── */
+.customerCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatarInitial {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.customerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.customerName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.customerContact {
+  font-size: 12px;
+  color: var(--color-muted);
+  line-height: 1.2;
+}
+
+/* ─── Subject cell ───────────────────────────────────────────────────────── */
+.subjectText {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Status Badge — dot + label, Rule #13 ───────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ─── Action Cell ────────────────────────────────────────────────────────── */
+.actionCell {
+  text-align: right;
+}
+
+/* NEW — resolve button: 32px dark fill row action */
+.resolveBtn {
+  height: 32px;
+  padding: 0 14px;
+  background: var(--color-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+.resolveBtn:hover {
+  opacity: 0.82;
+}
+
+/* NEW — closed chip: replaces resolveBtn when ticket is resolved */
+.closedChip {
+  height: 32px;
+  padding: 0 14px;
+  background: var(--color-surface);
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  cursor: default;
+  white-space: nowrap;
+}
+
+/* ─── Inline Detail Panel (flatMap pattern) ──────────────────────────────── */
+.detailRow {
+  background: var(--color-surface);
+}
+
+.detailPanel {
+  display: flex;
+  gap: 0;
+  padding: 24px 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.detailSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 28px;
+}
+
+.detailSection:first-child {
+  padding-left: 0;
+}
+
+.detailSection:last-child {
+  padding-right: 0;
+}
+
+.detailDivider {
+  width: 1px;
+  background: var(--color-border);
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+.detailField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detailLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.detailValue {
+  font-size: 13px;
+  color: var(--color-text);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* NEW — multi-line ticket description inside detail panel */
+.descriptionText {
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.6;
+  font-weight: 400;
+  margin: 0;
+  max-width: 520px;
+}
+
+/* ─── Detail Panel — large avatar block ─────────────────────────────────── */
+.detailAvatar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detailAvatarCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detailAvatarInitial {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.detailAvatarInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detailAvatarName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.detailAvatarContact {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* ─── Empty State — Rule #16 ─────────────────────────────────────────────── */
+.emptyCell {
+  padding: 64px 24px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.emptyGlyph {
+  font-size: 28px;
+  color: var(--color-border);
+  line-height: 1;
+}
+
+.emptyTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.emptyHint {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ─── Table Footer ───────────────────────────────────────────────────────── */
+.tableFooter {
+  padding: 12px 16px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  font-size: 12px;
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clearFilter {
+  color: var(--color-text);
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 12px;
+  font-family: var(--font-body);
+  opacity: 0.8;
+}
+
+.clearFilter:hover {
+  opacity: 1;
+}
