@@ -42,3 +42,13 @@ class Ticket(models.Model):
     class Meta:
         db_table = 'tickets'
         managed = False
+
+
+class Feedback(models.Model):
+    orderid = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True, db_column='orderid')
+    rating = models.IntegerField()
+    comment = models.TextField()
+
+    class Meta:
+        db_table = 'feedback'
+        managed = False

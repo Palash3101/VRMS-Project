@@ -23,3 +23,16 @@ class CustomerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['customerid', 'is_active', 'phone', 'address', 'name', 'inquiries', 'orders']
+
+class CustomerDetailSerializerAdmin(serializers.ModelSerializer):
+
+    inquiries = inquiry_serializers.InquirySerializer(many=True, read_only=True)
+    orders = order_serializers.OrderDetailSerializer(many=True, read_only=True)
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+    class Meta:
+        model = Customer
+        fields = '__all__'
+        read_only_fields = ['phone', 'address', 'name', 'customerid']

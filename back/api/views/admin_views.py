@@ -58,4 +58,32 @@ class CustomerListView(APIView):
         serializer = customer_serializers.CustomerSerializer(customers, many=True)
         return Response(serializer.data)
 
+class CustomerDetailView(APIView):
+    # permission_classes = [IsAuthenticated, IsAdmin]
 
+    def get(self, request, customer_id):
+        try:
+            customer = Customer.objects.get(customerid=customer_id)
+            serializer = customer_serializers.CustomerDetailSerializerAdmin(customer)
+            return Response(serializer.data)
+        
+        except Customer.DoesNotExist:
+            return Response({'error': 'Customer not found'}, status=404)
+    
+    def put(self, request, customer_id):
+        try:
+            customer = Customer.objects.get(customerid=customer_id)
+        except Customer.DoesNotExist:
+            return Response({'error': 'Customer not found'}, status=404)
+        
+        print(request.data)
+        
+        serializer = customer_serializers.CustomerDetailSerializerAdmin(customer, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
+            
+        
