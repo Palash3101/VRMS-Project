@@ -1,0 +1,530 @@
+/* ============================================================
+   customer/vendors/vendors.module.css
+   All locked patterns copied verbatim. New classes below.
+   RULES: no hardcoded hex, no :root, no @import fonts.
+   ============================================================ */
+
+/* ── Page shell ─────────────────────────────────────────── */
+.page {
+  padding: 40px 48px 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.pageHeader {
+  margin-bottom: 32px;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 6px;
+}
+
+.pageSubtitle {
+  font-size: 14px;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+/* ── Controls row (filter pills + search) ───────────────── */
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+/* ── Filter pill group (LOCKED PATTERN) ─────────────────── */
+.filterGroup {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 2px;
+  background: var(--color-bg);
+}
+
+.filterTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: color 0.12s, background 0.12s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterCount {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Search input (LOCKED PATTERN) ─────────────────────── */
+.searchWrap {
+  position: relative;
+  width: 268px;
+  flex-shrink: 0;
+}
+
+.searchWrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-muted);
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px 0 38px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ── Vendor catalog grid ────────────────────────────────── */
+.catalogWrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ── Vendor card ────────────────────────────────────────── */
+.vendorCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vendorCard:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-dark);
+}
+
+.vendorCardActive {
+  border-color: var(--color-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.vendorCardTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vendorCardAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.vendorCardMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.vendorCardName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vendorCardTagline {
+  font-size: 13px;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.vendorCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Category chip (same shape as modeChip, semantic name) ── */
+.categoryChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+/* ── Star rating ────────────────────────────────────────── */
+.starRating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.starFilled {
+  color: var(--color-primary);
+}
+
+.starEmpty {
+  color: var(--color-border);
+}
+
+/* ── Vendor detail panel ────────────────────────────────── */
+.vendorDetailPanel {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  animation: panelIn 0.18s ease;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.detailSection {
+  flex: 1;
+  padding: 0 24px;
+  min-width: 0;
+}
+
+.detailSection:first-child {
+  padding-left: 0;
+}
+
+.detailSection:last-child {
+  padding-right: 0;
+}
+
+.detailDivider {
+  width: 1px;
+  background: var(--color-border);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.detailSectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  margin: 0 0 16px;
+}
+
+.detailField {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+
+.detailField:last-child {
+  margin-bottom: 0;
+}
+
+.detailFieldKey {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+}
+
+.detailFieldVal {
+  font-size: 13px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+/* ── Mono chip (LOCKED — Rule #15) ─────────────────────── */
+.monoChip {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+/* ── Status badge (LOCKED PATTERN) ─────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ── Product rows (inside detail panel) ─────────────────── */
+.productList {
+  display: flex;
+  flex-direction: column;
+}
+
+.productRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+.productRow:last-child {
+  border-bottom: none;
+}
+
+.productName {
+  font-weight: 500;
+}
+
+.productPrice {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* ── Inquiry form ───────────────────────────────────────── */
+.inquiryForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+}
+
+.input {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: var(--color-muted);
+}
+
+.input:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+.inquiryTextarea {
+  height: 88px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.inquiryTextarea::placeholder {
+  color: var(--color-muted);
+}
+
+.inquiryTextarea:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+.inquirySubmitBtn {
+  width: 100%;
+  height: 44px;
+  background: var(--color-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.inquirySubmitBtn:hover {
+  opacity: 0.85;
+  transform: scale(1.005);
+}
+
+.inquirySubmitBtn:active {
+  transform: scale(0.998);
+}
+
+/* ── Empty state (LOCKED PATTERN) ───────────────────────── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+.emptyIcon {
+  font-size: 28px;
+  color: var(--color-border);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.emptyTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+  font-family: var(--font-body);
+}
+
+.emptyHint {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+/* ── Results footer ─────────────────────────────────────── */
+.catalogFooter {
+  font-size: 12px;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  padding-top: 4px;
+}
