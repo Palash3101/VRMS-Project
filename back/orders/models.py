@@ -23,7 +23,7 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status= models.CharField(max_length=15, choices=[('pending', 'Pending'), ('completed', 'Completed'), ('refunded', 'Refunded')], default='pending')
     payment_ref_id = models.CharField(max_length=10, null=True)
-    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid')
+    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid', related_name='orders')
 
     class Meta:
         db_table = 'orders'
@@ -37,7 +37,7 @@ class Ticket(models.Model):
     desc = models.TextField()
     status = models.CharField(max_length=15, choices=[('open', 'Open'), ('in progress', 'In Progress'), ('closed', 'Closed')], default='open')
     created_at = models.DateTimeField(auto_now_add=True)
-    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid')
+    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid', related_name='tickets')
 
     class Meta:
         db_table = 'tickets'
