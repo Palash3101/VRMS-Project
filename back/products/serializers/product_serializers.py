@@ -1,7 +1,12 @@
 from rest_framework import serializers
 from products.models import Product
 
-class ViewProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         exclude = ['vendorid']
+
+class AddProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"

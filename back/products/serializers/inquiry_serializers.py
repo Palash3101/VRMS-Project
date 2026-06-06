@@ -5,3 +5,10 @@ class ViewInquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inquiries
         exclude = ['vendorid']
+
+
+class EditInquirySerializerVendor(serializers.ModelSerializer):
+    class Meta:
+        model = Inquiries
+        fields = '__all__'
+        read_only_fields = ['inquiryid', 'vendorid', 'customerid', 'productid', 'created_at', 'subject', 'desc']

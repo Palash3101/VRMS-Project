@@ -25,6 +25,6 @@ urlpatterns = [
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', SignUpView.as_view(), name='sign_up'), 
     path('admin/', include('user.urls.admin_urls')),
+    path('vendor/', include('user.urls.vendor_urls')),
     # path('customer/', include('user.urls')),
-    # path('vendor/', include('user.urls')),
 ]

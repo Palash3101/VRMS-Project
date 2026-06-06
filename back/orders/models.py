@@ -17,7 +17,15 @@ class Order(models.Model):
         related_name='orders'
     )
     productid = models.ForeignKey('products.Product', on_delete=models.CASCADE, db_column='productid')
-    status = models.CharField(max_length=15, choices=[('pending', 'Pending'), ('processed', 'Processed'), ('delivered', 'Delivered'), ('cancelled', 'Cancelled'), ('dispatched', 'Dispatched')], default='pending')
+    status = models.CharField(max_length=15, choices=[
+        ('pending', 'Pending'), 
+        ('processed', 'Processed'), 
+        ('delivered', 'Delivered'), 
+        ('cancelled', 'Cancelled'), 
+        ('dispatched', 'Dispatched'), 
+        ('accepted', 'Accepted'), 
+        ('rejected', 'Rejected')], 
+    default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     base_amount = models.DecimalField(max_digits=10, decimal_places=2)
     total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -52,3 +60,17 @@ class Feedback(models.Model):
     class Meta:
         db_table = 'feedback'
         managed = False
+
+
+class Payments(models.Model):
+    reference_no = models.CharField(primary_key=True, max_length=100, default=get_default_order_id)
+    orderid = models.ForeignKey(Order, on_delete=models.CASCADE, db_column='orderid', related_name='payments')
+    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid', related_name='payments')
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    gst = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_mode = models.CharField(max_length=15, choices=[('online', 'Online'), ('cash', 'Cash'), ('cheque', 'Cheque'), ('neft', 'NEFT')])
+    paid_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'payments'
+        managed = False 

@@ -15,7 +15,7 @@ class CustomerListSerializer(serializers.ModelSerializer):
 
 class CustomerProfileSerializer(serializers.ModelSerializer):
     orders = order_serializers.OrderDetailSerializer(many=True, read_only=True)
-    products = product_serializers.ViewProductSerializer(many=True, read_only=True)
+    products = product_serializers.ProductSerializer(many=True, read_only=True)
     inquiries = inquiry_serializers.ViewInquirySerializer(many=True, read_only=True)
 
     class Meta:
