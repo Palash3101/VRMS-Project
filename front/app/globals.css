@@ -85,3 +85,76 @@ svg {
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
+
+
+
+/* ══════════════════════════════════════════
+   SHIMMER / SKELETON SYSTEM
+   Used on Day 31–32 for loading states.
+   
+   Usage in TSX:
+     <div className="skeleton skeletonText" />
+     <div className="skeleton skeletonStat" />
+     <div className="skeleton skeletonChart" />
+   
+   Always gate with: isLoading && (  // TODO: API — set true while fetching
+   ══════════════════════════════════════════ */
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.skeleton {
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.4s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Compose with .skeleton for common shapes */
+
+/* Single line of text */
+.skeletonText {
+  height: 14px;
+  width: 100%;
+}
+
+/* Short label (half width) */
+.skeletonLabel {
+  height: 11px;
+  width: 50%;
+}
+
+/* Stat strip value (large number) */
+.skeletonStat {
+  height: 28px;
+  width: 72px;
+}
+
+/* Table row placeholder */
+.skeletonRow {
+  height: 48px;
+  width: 100%;
+  border-radius: 0; /* table rows have no radius */
+}
+
+/* Chart panel placeholder */
+.skeletonChart {
+  height: 200px;
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+/* KPI card full */
+.skeletonCard {
+  height: 80px;
+  width: 100%;
+  border-radius: var(--radius-md);
+}

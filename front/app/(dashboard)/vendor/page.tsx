@@ -42,6 +42,9 @@ const orderStatusStyle: Record<string, { background: string; color: string }> = 
 };
 
 export default function VendorDashboard() {
+
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   return (
     <main className={styles.page}>
 
@@ -62,10 +65,12 @@ export default function VendorDashboard() {
           className={styles.statTile}
           style={{ borderRight: '1px solid var(--color-border)' }}
         >
-          <span className={styles.statLabel}>Total Earnings</span>
-          <span className={styles.statValue}>
-            ₹{vendorStats.totalEarnings.toLocaleString('en-IN')}
-          </span>
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <span className={styles.statLabel}>Total Earnings</span>}
+          {isLoading ? <div className="skeleton skeletonStat" /> : (
+            <span className={styles.statValue}>
+              ₹{vendorStats.totalEarnings.toLocaleString('en-IN')}
+            </span>
+          )}
         </div>
 
         {/* Active tile — yellow dot signals live in-flight data */}
@@ -73,17 +78,21 @@ export default function VendorDashboard() {
           className={`${styles.statTile} ${styles.statTileActive}`}
           style={{ borderRight: '1px solid var(--color-border)' }}
         >
-          <span className={styles.statLabel}>
-            <span className={styles.statActiveDot} />
-            Active Orders
-          </span>
-          <span className={styles.statValue}>{vendorStats.activeOrders}</span>
+          {isLoading ? (
+            <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+          ) : (
+            <span className={styles.statLabel}>
+              <span className={styles.statActiveDot} />
+              Active Orders
+            </span>
+          )}
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={styles.statValue}>{vendorStats.activeOrders}</span>}
         </div>
 
         {/* Last tile: no border-right */}
         <div className={styles.statTile}>
-          <span className={styles.statLabel}>Leads Assigned</span>
-          <span className={styles.statValue}>{vendorStats.leadsAssigned}</span>
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <span className={styles.statLabel}>Leads Assigned</span>}
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={styles.statValue}>{vendorStats.leadsAssigned}</span>}
         </div>
 
       </div>
@@ -93,11 +102,11 @@ export default function VendorDashboard() {
       <div className={styles.chartGrid}>
         <div className={styles.chartPanel}>
           <p className={styles.chartTitle}>Revenue Over Time</p>
-          <RevenueChart />
+          {isLoading ? <div className="skeleton skeletonChart" /> : <RevenueChart />}
         </div>
         <div className={styles.chartPanel}>
           <p className={styles.chartTitle}>Leads by Month</p>
-          <LeadsChart />
+          {isLoading ? <div className="skeleton skeletonChart" /> : <LeadsChart />}
         </div>
       </div>
 
@@ -116,56 +125,68 @@ export default function VendorDashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentOrders.map((order, i) => {
-                const isLast = i === recentOrders.length - 1;
-                const tdBorder = isLast
-                  ? { borderBottom: 'none' }
-                  : undefined;
-
-                return (
-                  <tr key={order.id} className={styles.row}>
-
-                    {/* Order No. — monospace chip (Rule #15) */}
-                    <td className={styles.td} style={tdBorder}>
-                      <code className={styles.monoChip}>{order.orderNo}</code>
+              {isLoading ? (
+                /* Block D - Skeleton Rows (colSpan changed to 4 to match headers) */
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={`skel-${i}`}>
+                    <td colSpan={4} style={{ padding: '10px 24px' }}>
+                      <div className="skeleton skeletonRow" style={{ height: '40px' }} />
                     </td>
-
-                    {/* Customer — 36px dark avatar + name */}
-                    <td className={styles.td} style={tdBorder}>
-                      <div className={styles.customerCell}>
-                        <span className={styles.avatar}>
-                          {order.customer[0]}
-                        </span>
-                        <span className={styles.customerName}>
-                          {order.customer}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Amount — rupee formatted */}
-                    <td className={styles.td} style={tdBorder}>
-                      <span className={styles.amount}>
-                        ₹{order.amount.toLocaleString('en-IN')}
-                      </span>
-                    </td>
-
-                    {/* Status — dot + label badge, inline style tint */}
-                    <td className={styles.td} style={tdBorder}>
-                      <span
-                        className={styles.statusBadge}
-                        style={orderStatusStyle[order.status]}
-                      >
-                        <span
-                          className={styles.statusDot}
-                          style={{ background: orderStatusStyle[order.status].color }}
-                        />
-                        {order.status}
-                      </span>
-                    </td>
-
                   </tr>
-                );
-              })}
+                ))
+              ) : (
+                /* Existing Data Rows */
+                recentOrders.map((order, i) => {
+                  const isLast = i === recentOrders.length - 1;
+                  const tdBorder = isLast
+                    ? { borderBottom: 'none' }
+                    : undefined;
+
+                  return (
+                    <tr key={order.id} className={styles.row}>
+
+                      {/* Order No. */}
+                      <td className={styles.td} style={tdBorder}>
+                        <code className={styles.monoChip}>{order.orderNo}</code>
+                      </td>
+
+                      {/* Customer */}
+                      <td className={styles.td} style={tdBorder}>
+                        <div className={styles.customerCell}>
+                          <span className={styles.avatar}>
+                            {order.customer[0]}
+                          </span>
+                          <span className={styles.customerName}>
+                            {order.customer}
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Amount */}
+                      <td className={styles.td} style={tdBorder}>
+                        <span className={styles.amount}>
+                          ₹{order.amount.toLocaleString('en-IN')}
+                        </span>
+                      </td>
+
+                      {/* Status */}
+                      <td className={styles.td} style={tdBorder}>
+                        <span
+                          className={styles.statusBadge}
+                          style={orderStatusStyle[order.status]}
+                        >
+                          <span
+                            className={styles.statusDot}
+                            style={{ background: orderStatusStyle[order.status].color }}
+                          />
+                          {order.status}
+                        </span>
+                      </td>
+
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>

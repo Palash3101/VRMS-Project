@@ -94,6 +94,8 @@ export default function AdminLeadsPage() {
     Object.fromEntries(LEADS.filter(l => l.assignedVendor).map(l => [l.id, l.assignedVendor!]))
   );
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // ── Counts for stat strip & filter pill badges ─────────────────────────────
   const counts = useMemo(() => {
     const base: Record<string, number> = { All: LEADS.length };
@@ -195,10 +197,20 @@ export default function AdminLeadsPage() {
             style={{ borderRight: i < STAT_TILES.length - 1 ? '1px solid var(--color-border)' : 'none' }}
             onClick={() => { setFilter(tile.filter); setSearch(''); }}
           >
-            <span className={s.statValue}>
-              {tile.filter === 'All' ? LEADS.length : (counts[tile.filter] ?? 0)}
-            </span>
-            <span className={s.statLabel}>{tile.label}</span>
+            {isLoading ? (
+              <div className="skeleton skeletonStat" />
+            ) : (
+              <span className={s.statValue}>
+                {tile.filter === 'All' ? LEADS.length : (counts[tile.filter] ?? 0)}
+              </span>
+            )}
+            
+            {isLoading ? (
+              <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+            ) : (
+              <span className={s.statLabel}>{tile.label}</span>
+            )}
+            
             {filter === tile.filter && <span className={s.statActiveDot} />}
           </button>
         ))}
@@ -228,7 +240,17 @@ export default function AdminLeadsPage() {
           </thead>
 
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={6} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td className={s.td} colSpan={6}>
                   <div className={s.emptyState}>
@@ -239,6 +261,7 @@ export default function AdminLeadsPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               filtered.map(lead => {
                 const initial = lead.name.charAt(0).toUpperCase();
                 const currentVendor = assignedVendors[lead.id] ?? '';

@@ -42,6 +42,7 @@ const dotColor: Record<string, string> = {
 };
 
 export default function AdminDashboard() {
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
   const today = new Date().toLocaleDateString('en-IN', {
     weekday: 'long',
     year: 'numeric',
@@ -68,14 +69,25 @@ export default function AdminDashboard() {
       <div className={styles.kpiStrip}>
         {kpiStats.map((stat, i) => (
           <div key={i} className={styles.kpiTile}>
-            <span className={styles.kpiLabel}>{stat.label}</span>
-            <span className={styles.kpiValue}>{stat.value}</span>
-            <span
-              className={styles.kpiTrend}
-              style={{ color: stat.positive ? 'var(--color-success)' : 'var(--color-error)' }}
-            >
-              {stat.trend}
-            </span>
+            {isLoading
+              ? <div className="skeleton skeletonStat" />
+              : <span className={styles.kpiValue}>{stat.value}</span>
+            }
+            {isLoading
+              ? <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+              : <span className={styles.kpiLabel}>{stat.label}</span>
+            } 
+            {isLoading
+              ? <div className="skeleton skeletonLabel" style={{ width: 72 }} />
+              : (
+                <span
+                  className={styles.kpiTrend}
+                  style={{ color: stat.positive ? 'var(--color-success)' : 'var(--color-error)' }}
+                >
+                  {stat.trend}
+                </span>
+              )
+            }
           </div>
         ))}
       </div>
@@ -86,7 +98,10 @@ export default function AdminDashboard() {
           <h2 className={styles.cardTitle}>Revenue</h2>
           <span className={styles.cardMeta}>Last 6 months</span>
         </div>
-        <RevenueChart />
+        {isLoading
+          ? <div className="skeleton skeletonChart" />
+          : <RevenueChart />
+        }
       </div>
 
       {/* ── Bottom row: leads chart + activity feed ──────────────────── */}
@@ -97,7 +112,10 @@ export default function AdminDashboard() {
             <h2 className={styles.cardTitle}>Lead Sources</h2>
             <span className={styles.cardMeta}>By origin channel</span>
           </div>
-          <LeadsChart />
+          {isLoading
+            ? <div className="skeleton skeletonChart" />
+            : <LeadsChart />
+          }
         </div>
 
         <div className={styles.card}>
@@ -105,19 +123,26 @@ export default function AdminDashboard() {
             <h2 className={styles.cardTitle}>Recent Activity</h2>
           </div>
           <ul className={styles.activityList} aria-label="Recent system activity">
-            {recentActivity.map((item) => (
-              <li key={item.id} className={styles.activityItem}>
-                <span
-                  className={styles.activityDot}
-                  style={{ background: dotColor[item.type] ?? '#9B9B9B' }}
-                  aria-hidden="true"
-                />
-                <div className={styles.activityContent}>
-                  <p className={styles.activityText}>{item.text}</p>
-                  <time className={styles.activityTime}>{item.time}</time>
-                </div>
-              </li>
-            ))}
+            {isLoading 
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <li key={`skel-${i}`} className={styles.activityItem}>
+                    <div className="skeleton skeletonRow" style={{ width: '100%', height: '40px' }} />
+                  </li>
+                ))
+              : recentActivity.map((item) => (
+                  <li key={item.id} className={styles.activityItem}>
+                    <span
+                      className={styles.activityDot}
+                      style={{ background: dotColor[item.type] ?? '#9B9B9B' }}
+                      aria-hidden="true"
+                    />
+                    <div className={styles.activityContent}>
+                      <p className={styles.activityText}>{item.text}</p>
+                      <time className={styles.activityTime}>{item.time}</time>
+                    </div>
+                  </li>
+                ))
+            }
           </ul>
         </div>
 

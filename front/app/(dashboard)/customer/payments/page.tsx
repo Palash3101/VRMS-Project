@@ -59,6 +59,8 @@ export default function CustomerPaymentsPage() {
   const [search, setSearch]       = useState('');
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // Featured: first overdue → first pending → mockPayments[0]
   const featuredPayment: Payment =
     mockPayments.find(p => p.status === 'overdue') ??
@@ -316,7 +318,9 @@ export default function CustomerPaymentsPage() {
       </div>
 
       {/* Featured Invoice Card */}
-      {featuredPayment && (
+      {isLoading ? (
+        <div className="skeleton skeletonCard" style={{ height: 100, marginBottom: '24px' }} />
+      ) : featuredPayment && (
         <div className={s.featuredCard}>
           <div className={s.featuredLeft}>
             <p className={s.featuredCardLabel}>Most Actionable Invoice</p>
@@ -389,8 +393,8 @@ export default function CustomerPaymentsPage() {
 
         {/* Total Spent — display-only */}
         <div className={s.statTile} style={{ borderRight: '1px solid var(--color-border)' }}>
-          <span className={s.statValue}>{fmt(totalSpent)}</span>
-          <span className={s.statLabel}>Total Spent</span>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={s.statValue}>{fmt(totalSpent)}</span>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <span className={s.statLabel}>Total Spent</span>}
         </div>
 
         {/* Paid — clickable filter */}
@@ -403,8 +407,8 @@ export default function CustomerPaymentsPage() {
           onKeyDown={e => e.key === 'Enter' && handleFilterChange('paid')}
         >
           {filter === 'paid' && <span className={s.statActiveDot} />}
-          <span className={s.statValue}>{paidCount}</span>
-          <span className={s.statLabel}>Paid</span>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={s.statValue}>{paidCount}</span>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <span className={s.statLabel}>Paid</span>}
         </div>
 
         {/* Pending — clickable filter */}
@@ -416,8 +420,8 @@ export default function CustomerPaymentsPage() {
           onKeyDown={e => e.key === 'Enter' && handleFilterChange('pending')}
         >
           {filter === 'pending' && <span className={s.statActiveDot} />}
-          <span className={s.statValue}>{pendingCount}</span>
-          <span className={s.statLabel}>Pending / Overdue</span>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={s.statValue}>{pendingCount}</span>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <span className={s.statLabel}>Pending / Overdue</span>}
         </div>
       </div>
 
@@ -437,7 +441,17 @@ export default function CustomerPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={8} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={8} className={s.td} style={{ padding: 0, border: 'none' }}>
                   <div className={s.emptyState}>

@@ -58,6 +58,8 @@ export default function ReportsPage() {
   const [activeStat, setActiveStat] = useState<ActiveStat>('revenue');
   const [dateRange, setDateRange] = useState('this_month');
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   const statTiles: { key: ActiveStat; label: string; value: string }[] = [
     {
       key:   'revenue',
@@ -129,8 +131,17 @@ export default function ReportsPage() {
             onClick={() => setActiveStat(tile.key)}
           >
             {activeStat === tile.key && <span className={styles.statActiveDot} />}
-            <span className={styles.statValue}>{tile.value}</span>
-            <span className={styles.statLabel}>{tile.label}</span>
+            {isLoading ? (
+              <div className="skeleton skeletonStat" />
+            ) : (
+              <span className={styles.statValue}>{tile.value}</span>
+            )}
+
+            {isLoading ? (
+              <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+            ) : (
+              <span className={styles.statLabel}>{tile.label}</span>
+            )}
           </button>
         ))}
       </div>
@@ -139,11 +150,11 @@ export default function ReportsPage() {
       <div className={styles.chartGrid}>
         <div className={styles.chartPanel}>
           <p className={styles.chartTitle}>Revenue Trend</p>
-          <RevenueChart />
+          {isLoading ? <div className="skeleton skeletonChart" /> : <RevenueChart />}
         </div>
         <div className={styles.chartPanel}>
           <p className={styles.chartTitle}>Leads Overview</p>
-          <LeadsChart />
+          {isLoading ? <div className="skeleton skeletonChart" /> : <LeadsChart />}
         </div>
       </div>
 
@@ -162,60 +173,72 @@ export default function ReportsPage() {
               </tr>
             </thead>
             <tbody>
-              {vendorPerformance.map(vendor => (
-                <tr key={vendor.id} className={styles.row}>
+              {isLoading ? (
+                /* Block D - Skeleton Rows */
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={`skel-${i}`}>
+                    <td colSpan={4} style={{ padding: '10px 24px' }}>
+                      <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                /* Existing Data Rows */
+                vendorPerformance.map(vendor => (
+                  <tr key={vendor.id} className={styles.row}>
 
-                  {/* Vendor name + avatar */}
-                  <td className={styles.td}>
-                    <div className={styles.vendorCell}>
-                      <span className={styles.avatar}>
-                        {vendor.name[0]}
-                      </span>
-                      <span className={styles.vendorName}>{vendor.name}</span>
-                    </div>
-                  </td>
+                    {/* Vendor name + avatar */}
+                    <td className={styles.td}>
+                      <div className={styles.vendorCell}>
+                        <span className={styles.avatar}>
+                          {vendor.name[0]}
+                        </span>
+                        <span className={styles.vendorName}>{vendor.name}</span>
+                      </div>
+                    </td>
 
-                  {/* Leads handled — progress bar + number */}
-                  <td className={styles.td}>
-                    <div className={styles.metricCell}>
-                      <span
-                        className={styles.metricBar}
-                        style={{ width: `${(vendor.leadsHandled / maxLeads) * 64}px` }}
-                      />
-                      <span className={styles.metricNum}>{vendor.leadsHandled}</span>
-                    </div>
-                  </td>
+                    {/* Leads handled — progress bar + number */}
+                    <td className={styles.td}>
+                      <div className={styles.metricCell}>
+                        <span
+                          className={styles.metricBar}
+                          style={{ width: `${(vendor.leadsHandled / maxLeads) * 64}px` }}
+                        />
+                        <span className={styles.metricNum}>{vendor.leadsHandled}</span>
+                      </div>
+                    </td>
 
-                  {/* Orders closed — progress bar + number */}
-                  <td className={styles.td}>
-                    <div className={styles.metricCell}>
-                      {vendor.ordersClosed > 0 ? (
-                        <>
-                          <span
-                            className={styles.metricBar}
-                            style={{ width: `${(vendor.ordersClosed / maxOrders) * 64}px` }}
-                          />
-                          <span className={styles.metricNum}>{vendor.ordersClosed}</span>
-                        </>
+                    {/* Orders closed — progress bar + number */}
+                    <td className={styles.td}>
+                      <div className={styles.metricCell}>
+                        {vendor.ordersClosed > 0 ? (
+                          <>
+                            <span
+                              className={styles.metricBar}
+                              style={{ width: `${(vendor.ordersClosed / maxOrders) * 64}px` }}
+                            />
+                            <span className={styles.metricNum}>{vendor.ordersClosed}</span>
+                          </>
+                        ) : (
+                          <span className={styles.revenueZero}>—</span>
+                        )}
+                      </div>
+                    </td>
+
+                    {/* Revenue */}
+                    <td className={styles.td}>
+                      {vendor.revenue > 0 ? (
+                        <span className={styles.revenueValue}>
+                          ₹{vendor.revenue.toLocaleString('en-IN')}
+                        </span>
                       ) : (
-                        <span className={styles.revenueZero}>—</span>
+                        <span className={styles.revenueZero}>No revenue yet</span>
                       )}
-                    </div>
-                  </td>
+                    </td>
 
-                  {/* Revenue */}
-                  <td className={styles.td}>
-                    {vendor.revenue > 0 ? (
-                      <span className={styles.revenueValue}>
-                        ₹{vendor.revenue.toLocaleString('en-IN')}
-                      </span>
-                    ) : (
-                      <span className={styles.revenueZero}>No revenue yet</span>
-                    )}
-                  </td>
-
-                </tr>
-              ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
 

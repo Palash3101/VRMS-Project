@@ -46,6 +46,8 @@ export default function CustomersPage() {
   const [filter, setFilter] = useState<FilterTab>('all');
   const [search, setSearch] = useState('');
 
+  const isLoading = false; // TODO: API — set true while fetching
+
   // ── Derived counts ──
   const totalCount    = customers.length;
   const activeCount   = customers.filter(c => c.isActive).length;
@@ -139,8 +141,8 @@ export default function CustomersPage() {
           onKeyDown={e => e.key === 'Enter' && handleStatClick('all')}
           aria-label="Show all customers"
         >
-          <div className={s.statValue}>{totalCount}</div>
-          <div className={s.statLabel}>Total Customers</div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={s.statValue}>{totalCount}</div>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={s.statLabel}>Total Customers</div>}
         </div>
 
         {/* Active */}
@@ -153,14 +155,15 @@ export default function CustomersPage() {
           onKeyDown={e => e.key === 'Enter' && handleStatClick('active')}
           aria-label="Filter active customers"
         >
-          <div className={s.statValue}>{activeCount}</div>
-          <div className={s.statLabel}>
-            <span
-              className={s.statActiveDot}
-              style={{ background: 'var(--color-success)' }}
-            />
-            Active
-          </div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={s.statValue}>{activeCount}</div>}
+          {isLoading ? (
+            <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+          ) : (
+            <div className={s.statLabel}>
+              <span className={s.statActiveDot} style={{ background: 'var(--color-success)' }} />
+              Active
+            </div>
+          )}
         </div>
 
         {/* Inactive */}
@@ -172,14 +175,15 @@ export default function CustomersPage() {
           onKeyDown={e => e.key === 'Enter' && handleStatClick('inactive')}
           aria-label="Filter inactive customers"
         >
-          <div className={s.statValue}>{inactiveCount}</div>
-          <div className={s.statLabel}>
-            <span
-              className={s.statActiveDot}
-              style={{ background: 'var(--color-muted)' }}
-            />
-            Inactive
-          </div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={s.statValue}>{inactiveCount}</div>}
+          {isLoading ? (
+            <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+          ) : (
+            <div className={s.statLabel}>
+              <span className={s.statActiveDot} style={{ background: 'var(--color-muted)' }} />
+              Inactive
+            </div>
+          )}
         </div>
       </div>
 
@@ -232,7 +236,17 @@ export default function CustomersPage() {
             </tr>
           </thead>
           <tbody>
-            {visible.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={5} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : visible.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td className={s.td} colSpan={5}>
                   <div className={s.emptyState}>
@@ -243,6 +257,7 @@ export default function CustomersPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               visible.map(customer => (
                 <tr key={customer.id} className={s.row}>
 
@@ -324,12 +339,11 @@ export default function CustomersPage() {
                         </button>
                       )}
 
-                      {/* View — TODO: link to /admin/customers/:id */}
+                      {/* View */}
                       <button
                         className={`${s.btnAction} ${s.btnView}`}
                         aria-label={`View profile of ${customer.name}`}
                         onClick={() => {
-                          // TODO: API — navigate to /admin/customers/${customer.id}
                           console.log(`View customer #${customer.id}`);
                         }}
                       >

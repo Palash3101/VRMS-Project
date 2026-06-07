@@ -1,42 +1,40 @@
-/* ─── Page Shell ─────────────────────────────────────────────── */
+/* ─── Page shell ─────────────────────────────────────────────────────────── */
 .page {
   padding: 40px 48px 80px;
-  background: var(--color-bg);
-  min-height: 100vh;
+  max-width: 900px;
 }
 
-/* ─── Page Heading ────────────────────────────────────────────── */
-.heading {
+.pageTitle {
   font-family: var(--font-display);
   font-size: 32px;
   font-weight: 700;
   color: var(--color-muted);
-  letter-spacing: -0.5px;
-  line-height: 1;
-  margin: 0 0 32px;
+  letter-spacing: -0.02em;
+  margin: 0 0 40px;
 }
 
-/* ─── Section ─────────────────────────────────────────────────── */
-.settingsSection {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+/* ─── Section wrapper ────────────────────────────────────────────────────── */
+.section {
+  margin-bottom: 0;
 }
 
-.sectionHeading {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 700;
+/* ─── Section label (NEW — polish pass) ─────────────────────────────────── */
+/* Identical spec to detailSectionTitle: 11px 600 uppercase tracked muted    */
+.sectionLabel {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--color-muted);
-  letter-spacing: -0.3px;
-  margin: 0;
+  margin: 0 0 20px;
 }
 
-/* ─── Form Grid ───────────────────────────────────────────────── */
+/* ─── Form layout ────────────────────────────────────────────────────────── */
 .formGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px 32px;
+  gap: 20px 24px;
 }
 
 .formField {
@@ -45,34 +43,29 @@
   gap: 6px;
 }
 
-/* ─── Label ───────────────────────────────────────────────────── */
 .label {
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   color: var(--color-muted);
 }
 
-/* ─── Input + Select ──────────────────────────────────────────── */
-.input,
-.select {
+.input {
   height: 44px;
-  padding: 0 16px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
   font-family: var(--font-body);
   font-size: 14px;
   color: var(--color-text);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  width: 100%;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.input:focus,
-.select:focus {
+.input:focus {
   border-color: var(--color-dark);
   box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
 }
@@ -81,61 +74,99 @@
   color: var(--color-muted);
 }
 
+/* Custom select — hides native arrow, injects SVG chevron via background */
 .select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239B9B9B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  height: 44px;
+  padding: 0 36px 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%239B9B9B' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
+  background-position: right 12px center;
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
   cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-/* ─── Save Row ────────────────────────────────────────────────── */
+.select:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ─── Save row ───────────────────────────────────────────────────────────── */
 .saveRow {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  margin-top: 8px;
+  gap: 16px;
+  margin: 28px 0 32px;
+}
+
+.saveStatus {
+  display: flex;
+  align-items: center;
+}
+
+/* Unsaved changes indicator (NEW) */
+.unsavedLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unsavedDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Saved confirmation — inherits unsavedLabel layout, overrides color in JSX */
+.savedLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-success);
+  font-weight: 500;
 }
 
 .saveBtn {
   height: 44px;
-  padding: 0 28px;
+  padding: 0 24px;
+  background: var(--color-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
-  background: var(--color-dark);
-  border: none;
-  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.12s;
+  transition: opacity 0.15s, transform 0.1s;
 }
 
 .saveBtn:hover {
   opacity: 0.85;
-  transform: translateY(-1px);
+  transform: scale(1.01);
 }
 
-.saveBtn:active {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* ─── Divider ─────────────────────────────────────────────────── */
+/* ─── Divider ─────────────────────────────────────────────────────────────── */
 .divider {
-  border: none;
-  border-top: 1px solid var(--color-border);
-  margin: 48px 0;
+  height: 1px;
+  background: var(--color-border);
+  margin: 32px 0;
 }
 
-/* ─── Log Section ─────────────────────────────────────────────── */
-.logSection {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* ─── Table ───────────────────────────────────────────────────── */
+/* ─── Table wrapper ──────────────────────────────────────────────────────── */
 .tableWrap {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -154,10 +185,9 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-muted);
-  background: var(--color-surface);
-  padding: 12px 20px;
+  padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
   white-space: nowrap;
 }
 
@@ -170,72 +200,278 @@
 }
 
 .td {
+  padding: 14px 16px;
+  vertical-align: middle;
   font-family: var(--font-body);
   font-size: 14px;
   color: var(--color-text);
-  padding: 14px 20px;
   border-bottom: 1px solid var(--color-border);
-  vertical-align: middle;
 }
 
-.row:last-child .td {
+.lastRow {
   border-bottom: none;
 }
 
-/* ─── Admin Cell ──────────────────────────────────────────────── */
-.adminCell {
+/* ─── Avatar cell ────────────────────────────────────────────────────────── */
+.avatarCell {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
+.avatarCircle {
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-full);
   background: var(--color-dark);
   color: #fff;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  letter-spacing: 0;
 }
 
-.adminName {
+.avatarName {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-text);
+  white-space: nowrap;
 }
 
-/* ─── IP Chip ─────────────────────────────────────────────────── */
-.ipChip {
-  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+/* ─── Log type chip (NEW — polish pass) ──────────────────────────────────── */
+/* Identical shape to modeChip / categoryChip — new semantic name for logs   */
+.logTypeChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-family: var(--font-body);
   font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* The colored dot inside the chip — color set via inline style (Rule #9) */
+.typeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ─── Action text ────────────────────────────────────────────────────────── */
+.actionText {
+  font-size: 13px;
   color: var(--color-text);
+  line-height: 1.4;
+}
+
+/* ─── IP chip ────────────────────────────────────────────────────────────── */
+.ipChip {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 12px;
+  padding: 3px 8px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  padding: 3px 8px;
+  color: var(--color-muted);
   white-space: nowrap;
 }
 
-/* ─── Timestamp Cell ──────────────────────────────────────────── */
+/* ─── Timestamp ──────────────────────────────────────────────────────────── */
 .timestamp {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
   font-size: 12px;
   color: var(--color-muted);
   white-space: nowrap;
 }
 
-/* ─── Table Footer ────────────────────────────────────────────── */
-.tableFooter {
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-  padding: 10px 20px;
-  font-family: var(--font-body);
-  font-size: 12px;
-  color: var(--color-muted);
+
+
+
+
+/* ────────────────────────────────────────────────────
+   WEEK 5 — RESPONSIVE (shared pattern)
+   Paste at bottom of this CSS module.
+   @media (max-width: 767px) = mobile
+   @media (max-width: 479px) = very small screens
+   ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* 1. Page padding */
+  .page {
+    padding: 20px 16px 48px;
+  }
+
+  /* 2. Page header row — stack vertically */
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 3. Stat strip → 2×2 grid
+     Note: !important overrides inline style borderRight applied per tile */
+  .statStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: none;
+    border-radius: 0;
+    gap: 8px;
+    overflow: visible;
+  }
+  .statTile {
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px;
+    min-width: 0;
+  }
+  .statLabel {
+    font-size: 11px;
+  }
+  .statValue {
+    font-size: 20px;
+  }
+
+  /* 4. Filter pills → horizontal scroll */
+  .filterGroup {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+  .filterGroup::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 5. Table → card stacks */
+  .tableWrap {
+    overflow-x: visible;
+  }
+  .tableWrap table {
+    display: block;
+  }
+  .tableWrap thead {
+    display: none;
+  }
+  .tableWrap tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Each row becomes a 2-col card */
+  .tableWrap tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--color-border) !important; /* override table row rule */
+    box-shadow: none;
+  }
+  /* First td — card "title", full width, bold */
+  .tableWrap tbody td:first-child {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2px;
+  }
+  /* Middle tds — 2-col grid, compact */
+  .tableWrap tbody td {
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: none !important;
+    overflow: hidden;
+    min-width: 0;
+  }
+  /* Last td — actions row, full width */
+  .tableWrap tbody td:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2px;
+  }
+  /* flatMap detail rows — hidden on mobile (too complex for small screen) */
+  .detailRow,
+  .detailRowLast {
+    display: none !important;
+  }
+  /* Empty state — reduce padding */
+  .emptyState {
+    padding: 40px 16px;
+  }
+  /* Table footer — stack */
+  .tableFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Very small screens — single column stat strip */
+  .statTile {
+    min-width: calc(50% - 4px);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* admin/settings/settings.module.css — Week 5 extra */
+@media (max-width: 767px) {
+  /* Settings form → single column */
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Settings section padding */
+  .settingsSection {
+    padding: 20px 16px;
+  }
+  .sectionTitle {
+    font-size: 13px;
+  }
+
+  /* Save button — full width on mobile */
+  .saveBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Activity log IP chip — don't overflow */
+  .ipChip {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

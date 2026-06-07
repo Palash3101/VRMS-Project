@@ -49,6 +49,8 @@ export default function VendorsPage() {
   const [activeFilter, setActiveFilter] = useState<Status>('all');
   const [search, setSearch] = useState('');
 
+  const isLoading = false; // TODO: API — set true while fetching
+
   const counts = useMemo(() => ({
     all:      vendors.length,
     approved: vendors.filter(v => v.status === 'approved').length,
@@ -100,8 +102,16 @@ export default function VendorsPage() {
             onClick={() => setActiveFilter(f.key)}
             aria-pressed={activeFilter === f.key}
           >
-            <span className={styles.statValue}>{counts[f.key]}</span>
-            <span className={styles.statLabel}>{f.key === 'all' ? 'Total vendors' : f.label}</span>
+            {isLoading ? (
+              <div className="skeleton skeletonStat" />
+            ) : (
+              <span className={styles.statValue}>{counts[f.key]}</span>
+            )}
+            {isLoading ? (
+              <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+            ) : (
+              <span className={styles.statLabel}>{f.key === 'all' ? 'Total vendors' : f.label}</span>
+            )}
             {activeFilter === f.key && <span className={styles.statActiveDot} aria-hidden="true" />}
           </button>
         ))}
@@ -153,7 +163,17 @@ export default function VendorsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={5} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={5} className={styles.emptyCell}>
                   <div className={styles.empty}>
@@ -168,12 +188,12 @@ export default function VendorsPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               filtered.map(vendor => {
                 const cfg = STATUS_CONFIG[vendor.status as keyof typeof STATUS_CONFIG];
                 const initial = vendor.company.charAt(0).toUpperCase();
                 return (
                   <tr key={vendor.id} className={styles.row}>
-
                     {/* Company */}
                     <td className={styles.td}>
                       <div className={styles.companyCell}>
@@ -228,13 +248,11 @@ export default function VendorsPage() {
                             Reject
                           </button>
                         )}
-                        {/* TODO: link to /admin/vendors/:id */}
                         <button className={styles.btnView} aria-label={`View ${vendor.company} details`}>
                           View
                         </button>
                       </div>
                     </td>
-
                   </tr>
                 );
               })

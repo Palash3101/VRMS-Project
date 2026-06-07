@@ -91,6 +91,8 @@ export default function CustomerDashboard() {
   const [search, setSearch]           = useState('');
   const [expandedId, setExpandedId]   = useState<number | null>(null);
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // ── Derived stats ────────────────────────────────────────────
   const activeCount    = mockOrders.filter(o => isActive(o.status)).length;
   const deliveredCount = mockOrders.filter(o => o.status === 'Delivered').length;
@@ -161,8 +163,8 @@ export default function CustomerDashboard() {
           onClick={() => { setOrderFilter('active'); setSearch(''); }}
           role="button" tabIndex={0}
         >
-          <div className={styles.statValue}>{activeCount}</div>
-          <div className={styles.statLabel}>Active Orders</div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={styles.statValue}>{activeCount}</div>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={styles.statLabel}>Active Orders</div>}
           {orderFilter === 'active' && <div className={styles.statActiveDot} />}
         </div>
 
@@ -173,20 +175,22 @@ export default function CustomerDashboard() {
           onClick={() => { setOrderFilter('delivered'); setSearch(''); }}
           role="button" tabIndex={0}
         >
-          <div className={styles.statValue}>{deliveredCount}</div>
-          <div className={styles.statLabel}>Delivered</div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={styles.statValue}>{deliveredCount}</div>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={styles.statLabel}>Delivered</div>}
           {orderFilter === 'delivered' && <div className={styles.statActiveDot} />}
         </div>
 
         {/* Total Spent — display only */}
         <div className={styles.statTile}>
-          <div className={styles.statValue}>{fmt(totalSpent)}</div>
-          <div className={styles.statLabel}>Total Spent</div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={styles.statValue}>{fmt(totalSpent)}</div>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={styles.statLabel}>Total Spent</div>}
         </div>
       </div>
 
       {/* Featured order card */}
-      {featuredOrder && (
+      {isLoading ? (
+        <div className="skeleton skeletonCard" style={{ height: 100 }} />
+      ) : featuredOrder && (
         <div className={styles.featuredCard}>
           <div className={styles.featuredLeft}>
             <div className={styles.featuredCardLabel}>Active Order</div>
@@ -246,7 +250,17 @@ export default function CustomerDashboard() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={7} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={7}>
                   <div className={styles.emptyState}>

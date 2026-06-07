@@ -133,6 +133,8 @@ export default function VendorLeadsPage() {
   const [leads, setLeads] = useState<Lead[]>(mockLeads);
   const [statusOverride, setStatusOverride] = useState<Record<number, string>>({});
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // ── Derived state ──
 
   function getStatus(lead: Lead): string {
@@ -254,11 +256,20 @@ export default function VendorLeadsPage() {
                 }
               }}
             >
-              <div className={styles.statValue}>
-                {tile.value}
-                {isActive && <span className={styles.statActiveDot} />}
-              </div>
-              <div className={styles.statLabel}>{tile.label}</div>
+              {isLoading ? (
+                <div className="skeleton skeletonStat" />
+              ) : (
+                <div className={styles.statValue}>
+                  {tile.value}
+                  {isActive && <span className={styles.statActiveDot} />}
+                </div>
+              )}
+
+              {isLoading ? (
+                <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+              ) : (
+                <div className={styles.statLabel}>{tile.label}</div>
+              )}
             </div>
           );
         })}
@@ -294,7 +305,17 @@ export default function VendorLeadsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={6} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={6} className={styles.td}>
                   <div className={styles.emptyState}>
@@ -305,6 +326,7 @@ export default function VendorLeadsPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               filtered.flatMap((lead, idx, arr) => {
                 const isExpanded = expandedId === lead.id;
                 const isLast = idx === arr.length - 1 && !isExpanded;

@@ -38,6 +38,8 @@ export default function VendorProductsPage() {
   // Active stat filter: 'all' | 'low'
   const [activeFilter, setActiveFilter] = useState<FilterTab>('all');
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // ── Derived values ──────────────────────────────────────────
   const lowStockProducts  = products.filter(p => p.stock < 10);
   const totalValue        = products.reduce((sum, p) => sum + p.price * p.stock, 0);
@@ -120,8 +122,8 @@ export default function VendorProductsPage() {
           onClick={() => handleStatClick('all')}
         >
           {activeFilter === 'all' && <span className={s.statActiveDot} />}
-          <div className={s.statValue}>{products.length}</div>
-          <div className={s.statLabel}>Total Products</div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={s.statValue}>{products.length}</div>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={s.statLabel}>Total Products</div>}
         </div>
         <div
           className={`${s.statTile} ${activeFilter === 'low' ? s.statTileActive : ''}`}
@@ -129,14 +131,18 @@ export default function VendorProductsPage() {
           onClick={() => handleStatClick('low')}
         >
           {activeFilter === 'low' && <span className={s.statActiveDot} />}
-          <div className={s.statValue} style={{ color: lowStockProducts.length > 0 ? 'var(--color-error)' : undefined }}>
-            {lowStockProducts.length}
-          </div>
-          <div className={s.statLabel}>Low Stock (&lt; 10)</div>
+          {isLoading ? (
+            <div className="skeleton skeletonStat" />
+          ) : (
+            <div className={s.statValue} style={{ color: lowStockProducts.length > 0 ? 'var(--color-error)' : undefined }}>
+              {lowStockProducts.length}
+            </div>
+          )}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={s.statLabel}>Low Stock (&lt; 10)</div>}
         </div>
         <div className={s.statTile}>
-          <div className={s.statValue}>{formatPrice(totalValue)}</div>
-          <div className={s.statLabel}>Catalogue Value</div>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <div className={s.statValue}>{formatPrice(totalValue)}</div>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <div className={s.statLabel}>Catalogue Value</div>}
         </div>
       </div>
 
@@ -225,7 +231,17 @@ export default function VendorProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {displayed.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows (Adjusted to colSpan={4}) */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={4} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : displayed.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={4}>
                   <div className={s.emptyState}>
@@ -242,6 +258,7 @@ export default function VendorProductsPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               displayed.map(product => {
                 const isEditing = editingId === product.id;
                 const buf = editBuffer[product.id] ?? { name: product.name, price: String(product.price), stock: String(product.stock) };

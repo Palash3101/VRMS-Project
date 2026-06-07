@@ -96,6 +96,8 @@ export default function AdminOrdersPage() {
   const [search, setSearch] = useState('');
   const [dateRange, setDateRange] = useState<DateFilter>('all');
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // Cancel an order locally
   // TODO: API — PATCH /api/admin/orders/:id/cancel
   function handleCancel(id: number) {
@@ -169,8 +171,17 @@ export default function AdminOrdersPage() {
             tabIndex={0}
             onKeyDown={e => e.key === 'Enter' && handleStatTileClick(tile.key)}
           >
-            <div className={s.statValue}>{statCounts[tile.key]}</div>
-            <div className={s.statLabel}>{tile.label}</div>
+            {isLoading ? (
+              <div className="skeleton skeletonStat" />
+            ) : (
+              <div className={s.statValue}>{statCounts[tile.key]}</div>
+            )}
+
+            {isLoading ? (
+              <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+            ) : (
+              <div className={s.statLabel}>{tile.label}</div>
+            )}
             {activeFilter === tile.key && <span className={s.statActiveDot} />}
           </div>
         ))}
@@ -243,7 +254,17 @@ export default function AdminOrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows (Using colSpan=6 to match your table) */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={6} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={6}>
                   <div className={s.emptyState}>
@@ -260,6 +281,7 @@ export default function AdminOrdersPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               filtered.map(order => {
                 const statusCfg  = STATUS_BADGE[order.status];
                 const paymentCfg = PAYMENT_BADGE[order.paymentStatus];
@@ -332,7 +354,6 @@ export default function AdminOrdersPage() {
                             onClick={() => handleCancel(order.id)}
                           >
                             Cancel
-                            {/* TODO: API — PATCH /api/admin/orders/:id/cancel */}
                           </button>
                         )}
                       </div>

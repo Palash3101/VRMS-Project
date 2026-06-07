@@ -43,6 +43,8 @@ export default function VendorOrdersPage() {
     Object.fromEntries(vendorOrders.map(o => [o.id, o.status]))
   );
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // ─── Handlers ──────────────────────────────────────────────────────────────
 
   function handleAccept(e: React.MouseEvent, id: number) {
@@ -114,8 +116,17 @@ export default function VendorOrdersPage() {
             onClick={() => changeFilter(tab)}
           >
             {filter === tab && tab !== 'All' && <span className={s.statActiveDot} />}
-            <span className={s.statValue}>{counts[tab]}</span>
-            <span className={s.statLabel}>{tab === 'All' ? 'All Orders' : tab}</span>
+            {isLoading ? (
+              <div className="skeleton skeletonStat" />
+            ) : (
+              <span className={s.statValue}>{counts[tab]}</span>
+            )}
+            
+            {isLoading ? (
+              <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+            ) : (
+              <span className={s.statLabel}>{tab === 'All' ? 'All Orders' : tab}</span>
+            )}
           </button>
         ))}
       </div>
@@ -134,7 +145,16 @@ export default function VendorOrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={6} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
               /* ── Empty state (Rule #16) ─────────────────────────────────── */
               <tr>
                 <td colSpan={6} className={s.emptyCell}>

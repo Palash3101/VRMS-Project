@@ -129,6 +129,10 @@ export default function VendorInquiriesPage() {
   const [search, setSearch] = useState('');
   const [resolvedIds, setResolvedIds] = useState<Record<number, boolean>>({});
 
+
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
+
   // Effective status respects optimistic local resolves
   function eff(p: (typeof mockInquiries)[number]) {
     return resolvedIds[p.id] ? 'closed' : p.status;
@@ -248,8 +252,17 @@ export default function VendorInquiriesPage() {
             onClick={() => handleTileClick(tile.filter)}
           >
             {activeFilter === tile.filter && <span className={s.statActiveDot} />}
-            <span className={s.statValue}>{tile.value}</span>
-            <span className={s.statLabel}>{tile.label}</span>
+            {isLoading ? (
+              <div className="skeleton skeletonStat" />
+            ) : (
+              <span className={s.statValue}>{tile.value}</span>
+            )}
+            
+            {isLoading ? (
+              <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+            ) : (
+              <span className={s.statLabel}>{tile.label}</span>
+            )}
           </div>
         ))}
       </div>
@@ -270,7 +283,17 @@ export default function VendorInquiriesPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={COLS} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={COLS} className={s.emptyCell}>
                   <div className={s.emptyState}>
@@ -287,6 +310,7 @@ export default function VendorInquiriesPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               filtered.flatMap((p, idx) => {
                 const isLast     = idx === filtered.length - 1;
                 const isExpanded = expandedId === p.id;

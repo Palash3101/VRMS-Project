@@ -1,267 +1,234 @@
 'use client';
-
 import { useState } from 'react';
 import styles from './settings.module.css';
 
-// ─── Mock Data ──────────────────────────────────────────────────────────────
-// TODO: API — replace with GET /api/admin/settings
-const defaultSettings = {
-  appName:      'VRMS',
-  gstRate:      18,
-  currency:     'INR',
-  smtpHost:     'smtp.gmail.com',
-  smtpPort:     587,
-  smtpEmail:    'noreply@vrms.in',
-  smtpPassword: '',
+// ─── Initial values — used for dirty-check ────────────────────────────────────
+const INITIAL_SETTINGS = {
+  appName:      'VRMS Portal',
+  supportEmail: 'support@vrms.in',
+  timezone:     'Asia/Kolkata',
+  smtpHost:     'smtp.sendgrid.net',
+  smtpPort:     '587',
+  gstRate:      '18',
+  currency:     'INR (₹)',
 };
 
-// TODO: API — replace with GET /api/admin/activity-logs
-const activityLogs = [
-  {
-    id: 1,
-    admin:     'Arjun Mehta',
-    action:    'Approved vendor TechServe Pvt.',
-    ip:        '103.21.58.12',
-    createdAt: '2024-08-11T09:14:00',
-  },
-  {
-    id: 2,
-    admin:     'Arjun Mehta',
-    action:    'Assigned lead #7 to BuildCorp Ltd.',
-    ip:        '103.21.58.12',
-    createdAt: '2024-08-11T10:02:00',
-  },
-  {
-    id: 3,
-    admin:     'Priya Sharma',
-    action:    'Updated GST rate to 18%',
-    ip:        '192.168.1.45',
-    createdAt: '2024-08-10T16:30:00',
-  },
-  {
-    id: 4,
-    admin:     'Priya Sharma',
-    action:    'Rejected vendor NexaWorks',
-    ip:        '192.168.1.45',
-    createdAt: '2024-08-10T11:22:00',
-  },
-  {
-    id: 5,
-    admin:     'Arjun Mehta',
-    action:    'Cancelled order ORD-2024-0005',
-    ip:        '103.21.58.12',
-    createdAt: '2024-08-10T09:55:00',
-  },
+// TODO: API — replace with GET /api/admin/logs
+const MOCK_LOGS = [
+  { id: 1, adminName: 'Suresh Admin', adminInitial: 'S', type: 'vendor',  action: 'Approved vendor TechSupply Co. (#12)',              ip: '192.168.1.4',  timestamp: '2024-11-22 09:14' },
+  { id: 2, adminName: 'Suresh Admin', adminInitial: 'S', type: 'lead',    action: 'Assigned lead #88 to Rajiv Malhotra',               ip: '192.168.1.4',  timestamp: '2024-11-22 09:31' },
+  { id: 3, adminName: 'Suresh Admin', adminInitial: 'S', type: 'order',   action: 'Cancelled order ORD-2024-0091',                     ip: '10.0.0.2',     timestamp: '2024-11-21 14:05' },
+  { id: 4, adminName: 'Priya Admin',  adminInitial: 'P', type: 'payment', action: 'Marked payment INV-2024-0044 as completed',         ip: '10.0.0.5',     timestamp: '2024-11-21 11:48' },
+  { id: 5, adminName: 'Suresh Admin', adminInitial: 'S', type: 'vendor',  action: 'Rejected vendor GreenClean (#15) — docs missing',  ip: '192.168.1.4',  timestamp: '2024-11-20 16:22' },
+  { id: 6, adminName: 'Priya Admin',  adminInitial: 'P', type: 'system',  action: 'Updated GST rate to 18%',                          ip: '10.0.0.5',     timestamp: '2024-11-20 10:00' },
 ];
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-function formatTimestamp(iso: string): string {
-  const d = new Date(iso);
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const dd  = String(d.getDate()).padStart(2, '0');
-  const mon = months[d.getMonth()];
-  const yyyy = d.getFullYear();
-  const hh  = String(d.getHours()).padStart(2, '0');
-  const mm  = String(d.getMinutes()).padStart(2, '0');
-  return `${dd} ${mon} ${yyyy}, ${hh}:${mm}`;
-}
+// Rule #9 — dot color via inline style, never a dynamic class
+const logTypeDot: Record<string, string> = {
+  vendor:  '#F5C518',
+  lead:    '#4CAF50',
+  order:   '#1A1A1A',
+  payment: '#9B9B9B',
+  system:  '#E53935',
+};
 
-function initials(name: string): string {
-  return name
-    .split(' ')
-    .map(w => w[0])
-    .slice(0, 1)
-    .join('')
-    .toUpperCase();
-}
-
-// ─── Page ────────────────────────────────────────────────────────────────────
 export default function SettingsPage() {
-  const [settings, setSettings] = useState(defaultSettings);
-  const [saved, setSaved] = useState(false);
+  const [formState, setFormState] = useState({ ...INITIAL_SETTINGS });
+  const [saveFlash, setSaveFlash] = useState(false);
 
-  function handleChange(field: keyof typeof defaultSettings, value: string | number) {
-    setSettings(prev => ({ ...prev, [field]: value }));
-    setSaved(false);
-  }
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
 
-  // TODO: API — replace with POST /api/admin/settings
-  function handleSave() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  }
+  // Derived — no extra state needed
+  const isDirty = (Object.keys(INITIAL_SETTINGS) as Array<keyof typeof INITIAL_SETTINGS>).some(
+    (k) => formState[k] !== INITIAL_SETTINGS[k],
+  );
+
+  const handleChange = (field: keyof typeof formState, value: string) =>
+    setFormState((prev) => ({ ...prev, [field]: value }));
+
+  const handleSave = () => {
+    // TODO: API — PATCH /api/admin/settings
+    setSaveFlash(true);
+    setTimeout(() => setSaveFlash(false), 2000);
+  };
 
   return (
-    <main className={styles.page}>
-      <h1 className={styles.heading}>System Settings &amp; Logs</h1>
+    <div className={styles.page}>
+      <h1 className={styles.pageTitle}>Settings</h1>
 
-      {/* ── Settings Form ─────────────────────────────────────────── */}
-      <section className={styles.settingsSection}>
-        <h2 className={styles.sectionHeading}>General Settings</h2>
-
+      {/* ── Application ──────────────────────────────────────────────────────── */}
+      <section className={styles.section}>
+        <p className={styles.sectionLabel}>Application</p>
         <div className={styles.formGrid}>
-
-          {/* App Name */}
           <div className={styles.formField}>
-            <label className={styles.label} htmlFor="appName">App Name</label>
+            <label className={styles.label}>App Name</label>
             <input
-              id="appName"
-              type="text"
               className={styles.input}
-              value={settings.appName}
-              onChange={e => handleChange('appName', e.target.value)}
-              placeholder="e.g. VRMS"
+              value={formState.appName}
+              onChange={(e) => handleChange('appName', e.target.value)}
             />
           </div>
-
-          {/* GST Rate */}
           <div className={styles.formField}>
-            <label className={styles.label} htmlFor="gstRate">GST Rate (%)</label>
+            <label className={styles.label}>Support Email</label>
             <input
-              id="gstRate"
-              type="number"
               className={styles.input}
-              value={settings.gstRate}
-              min={0}
-              max={100}
-              onChange={e => handleChange('gstRate', Number(e.target.value))}
-              placeholder="18"
+              type="email"
+              value={formState.supportEmail}
+              onChange={(e) => handleChange('supportEmail', e.target.value)}
             />
           </div>
-
-          {/* Currency */}
           <div className={styles.formField}>
-            <label className={styles.label} htmlFor="currency">Currency</label>
+            <label className={styles.label}>Timezone</label>
             <select
-              id="currency"
               className={styles.select}
-              value={settings.currency}
-              onChange={e => handleChange('currency', e.target.value)}
+              value={formState.timezone}
+              onChange={(e) => handleChange('timezone', e.target.value)}
             >
-              <option value="INR">INR — Indian Rupee</option>
-              <option value="USD">USD — US Dollar</option>
-              <option value="EUR">EUR — Euro</option>
+              <option>Asia/Kolkata</option>
+              <option>UTC</option>
+              <option>America/New_York</option>
+              <option>Europe/London</option>
             </select>
           </div>
-
-          {/* SMTP Host */}
-          <div className={styles.formField}>
-            <label className={styles.label} htmlFor="smtpHost">SMTP Host</label>
-            <input
-              id="smtpHost"
-              type="text"
-              className={styles.input}
-              value={settings.smtpHost}
-              onChange={e => handleChange('smtpHost', e.target.value)}
-              placeholder="smtp.gmail.com"
-            />
-          </div>
-
-          {/* SMTP Port */}
-          <div className={styles.formField}>
-            <label className={styles.label} htmlFor="smtpPort">SMTP Port</label>
-            <input
-              id="smtpPort"
-              type="number"
-              className={styles.input}
-              value={settings.smtpPort}
-              onChange={e => handleChange('smtpPort', Number(e.target.value))}
-              placeholder="587"
-            />
-          </div>
-
-          {/* Sender Email */}
-          <div className={styles.formField}>
-            <label className={styles.label} htmlFor="smtpEmail">Sender Email</label>
-            <input
-              id="smtpEmail"
-              type="email"
-              className={styles.input}
-              value={settings.smtpEmail}
-              onChange={e => handleChange('smtpEmail', e.target.value)}
-              placeholder="noreply@vrms.in"
-            />
-          </div>
-
-          {/* SMTP Password — full width */}
-          <div className={styles.formField} style={{ gridColumn: '1 / -1' }}>
-            <label className={styles.label} htmlFor="smtpPassword">SMTP Password</label>
-            <input
-              id="smtpPassword"
-              type="password"
-              className={styles.input}
-              value={settings.smtpPassword}
-              onChange={e => handleChange('smtpPassword', e.target.value)}
-              placeholder="••••••••"
-              autoComplete="new-password"
-            />
-          </div>
-
-        </div>
-
-        {/* Save CTA */}
-        <div className={styles.saveRow}>
-          <button className={styles.saveBtn} onClick={handleSave}>
-            {saved ? '✓ Saved' : 'Save Settings'}
-          </button>
         </div>
       </section>
 
-      {/* ── Divider ───────────────────────────────────────────────── */}
-      <hr className={styles.divider} />
+      <div className={styles.divider} />
 
-      {/* ── Activity Log Table ────────────────────────────────────── */}
-      <section className={styles.logSection}>
-        <h2 className={styles.sectionHeading}>Activity Log</h2>
+      {/* ── Email / SMTP ──────────────────────────────────────────────────────── */}
+      <section className={styles.section}>
+        <p className={styles.sectionLabel}>Email / SMTP</p>
+        <div className={styles.formGrid}>
+          <div className={styles.formField}>
+            <label className={styles.label}>SMTP Host</label>
+            <input
+              className={styles.input}
+              value={formState.smtpHost}
+              onChange={(e) => handleChange('smtpHost', e.target.value)}
+            />
+          </div>
+          <div className={styles.formField}>
+            <label className={styles.label}>SMTP Port</label>
+            <input
+              className={styles.input}
+              value={formState.smtpPort}
+              onChange={(e) => handleChange('smtpPort', e.target.value)}
+            />
+          </div>
+        </div>
+      </section>
 
+      <div className={styles.divider} />
+
+      {/* ── Tax & Currency ────────────────────────────────────────────────────── */}
+      <section className={styles.section}>
+        <p className={styles.sectionLabel}>Tax & Currency</p>
+        <div className={styles.formGrid}>
+          <div className={styles.formField}>
+            <label className={styles.label}>GST Rate (%)</label>
+            <input
+              className={styles.input}
+              value={formState.gstRate}
+              onChange={(e) => handleChange('gstRate', e.target.value)}
+            />
+          </div>
+          <div className={styles.formField}>
+            <label className={styles.label}>Currency</label>
+            <select
+              className={styles.select}
+              value={formState.currency}
+              onChange={(e) => handleChange('currency', e.target.value)}
+            >
+              <option>INR (₹)</option>
+              <option>USD ($)</option>
+              <option>EUR (€)</option>
+              <option>GBP (£)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Save row ──────────────────────────────────────────────────────────── */}
+      <div className={styles.saveRow}>
+        <span className={styles.saveStatus}>
+          {saveFlash ? (
+            <span className={styles.savedLabel}>✓ Saved</span>
+          ) : isDirty ? (
+            <span className={styles.unsavedLabel}>
+              <span className={styles.unsavedDot} />
+              Unsaved changes
+            </span>
+          ) : null}
+        </span>
+        <button className={styles.saveBtn} onClick={handleSave}>
+          Save Settings
+        </button>
+      </div>
+
+      <div className={styles.divider} />
+
+      {/* ── Activity Log ──────────────────────────────────────────────────────── */}
+      <section className={styles.section}>
+        <p className={styles.sectionLabel}>Activity Log</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead>
               <tr>
-                <th className={styles.th} style={{ width: '28%' }}>Admin</th>
-                <th className={styles.th} style={{ width: '36%' }}>Action</th>
-                <th className={styles.th} style={{ width: '18%' }}>IP Address</th>
-                <th className={styles.th} style={{ width: '18%' }}>Timestamp</th>
+                <th className={styles.th}>Admin</th>
+                <th className={styles.th}>Type</th>
+                <th className={styles.th}>Action</th>
+                <th className={styles.th}>IP Address</th>
+                <th className={styles.th}>Timestamp</th>
               </tr>
             </thead>
             <tbody>
-              {activityLogs.map(log => (
-                <tr key={log.id} className={styles.row}>
-
-                  {/* Admin col — avatar + name */}
-                  <td className={styles.td}>
-                    <div className={styles.adminCell}>
-                      <span className={styles.avatar}>{initials(log.admin)}</span>
-                      <span className={styles.adminName}>{log.admin}</span>
-                    </div>
-                  </td>
-
-                  {/* Action */}
-                  <td className={styles.td}>{log.action}</td>
-
-                  {/* IP — monospace chip (Rule #15) */}
-                  <td className={styles.td}>
-                    <code className={styles.ipChip}>{log.ip}</code>
-                  </td>
-
-                  {/* Timestamp */}
-                  <td className={styles.td}>
-                    <span className={styles.timestamp}>
-                      {formatTimestamp(log.createdAt)}
-                    </span>
-                  </td>
-
-                </tr>
-              ))}
+              {isLoading ? (
+                /* Block D - Skeleton Rows */
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={`skel-${i}`}>
+                    <td colSpan={5} style={{ padding: '10px 24px' }}>
+                      <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                /* Existing Data Rows */
+                MOCK_LOGS.map((log, idx) => {
+                  const isLast = idx === MOCK_LOGS.length - 1;
+                  return (
+                    <tr key={log.id} className={styles.row}>
+                      <td className={`${styles.td} ${isLast ? styles.lastRow : ''}`}>
+                        <div className={styles.avatarCell}>
+                          <span className={styles.avatarCircle}>{log.adminInitial}</span>
+                          <span className={styles.avatarName}>{log.adminName}</span>
+                        </div>
+                      </td>
+                      <td className={`${styles.td} ${isLast ? styles.lastRow : ''}`}>
+                        <span className={styles.logTypeChip}>
+                          <span
+                            className={styles.typeDot}
+                            style={{ background: logTypeDot[log.type] ?? 'var(--color-muted)' }}
+                          />
+                          {log.type}
+                        </span>
+                      </td>
+                      <td className={`${styles.td} ${isLast ? styles.lastRow : ''}`}>
+                        <span className={styles.actionText}>{log.action}</span>
+                      </td>
+                      <td className={`${styles.td} ${isLast ? styles.lastRow : ''}`}>
+                        <code className={styles.ipChip}>{log.ip}</code>
+                      </td>
+                      <td className={`${styles.td} ${isLast ? styles.lastRow : ''}`}>
+                        <span className={styles.timestamp}>{log.timestamp}</span>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
-
-          <div className={styles.tableFooter}>
-            {activityLogs.length} log entries
-          </div>
         </div>
       </section>
-
-    </main>
+    </div>
   );
 }

@@ -174,6 +174,8 @@ export default function CustomerVendorsPage() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [inquiry, setInquiry] = useState({ subject: '', message: '' });
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   // ── Filter logic ────────────────────────────────────────────────────────────
 
   const filtered = mockVendors.filter((v) => {
@@ -281,7 +283,11 @@ export default function CustomerVendorsPage() {
 
       {/* Vendor grid */}
       <div className={styles.catalogWrap}>
-        {filtered.length === 0 ? (
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={`skel-${i}`} className="skeleton skeletonCard" style={{ height: 164 }} />
+          ))
+        ) : filtered.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>⊘</div>
             <p className={styles.emptyTitle}>No vendors found</p>
@@ -326,7 +332,7 @@ export default function CustomerVendorsPage() {
       </div>
 
       {/* Vendor detail panel — rendered after the grid */}
-      {expandedVendor && (
+      {!isLoading && expandedVendor && (
         <div className={styles.vendorDetailPanel}>
 
           {/* Section 1 — Vendor Info */}

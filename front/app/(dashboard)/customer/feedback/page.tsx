@@ -183,6 +183,8 @@ export default function FeedbackPage() {
     Record<number, { rating: number; comment: string }>
   >({});
 
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
   /* ── Derived helpers ── */
 
   const effectiveStatus = (o: Order): 'submitted' | 'pending' =>
@@ -538,8 +540,8 @@ export default function FeedbackPage() {
           className={styles.statTile}
           style={{ borderRight: '1px solid var(--color-border)' }}
         >
-          <span className={styles.statValue}>{MOCK_ORDERS.length}</span>
-          <span className={styles.statLabel}>Total Orders</span>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={styles.statValue}>{MOCK_ORDERS.length}</span>}
+          {isLoading ? <div className="skeleton skeletonLabel" style={{ width: 56 }} /> : <span className={styles.statLabel}>Total Orders</span>}
         </div>
 
         {/* Submitted — clickable filter */}
@@ -549,8 +551,12 @@ export default function FeedbackPage() {
           onClick={() => handleFilterChange('submitted')}
         >
           {filter === 'submitted' && <span className={styles.statActiveDot} />}
-          <span className={styles.statValue}>{submittedCount}</span>
-          <span className={styles.statLabel}>Submitted</span>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={styles.statValue}>{submittedCount}</span>}
+          {isLoading ? (
+            <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+          ) : (
+            <span className={styles.statLabel}>Submitted</span>
+          )}
         </div>
 
         {/* Pending — clickable filter */}
@@ -559,8 +565,12 @@ export default function FeedbackPage() {
           onClick={() => handleFilterChange('pending')}
         >
           {filter === 'pending' && <span className={styles.statActiveDot} />}
-          <span className={styles.statValue}>{pendingCount}</span>
-          <span className={styles.statLabel}>Pending</span>
+          {isLoading ? <div className="skeleton skeletonStat" /> : <span className={styles.statValue}>{pendingCount}</span>}
+          {isLoading ? (
+            <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+          ) : (
+            <span className={styles.statLabel}>Pending</span>
+          )}
         </div>
       </div>
 
@@ -579,20 +589,27 @@ export default function FeedbackPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
-              <tr>
-                <td colSpan={7} className={styles.td} style={{ borderBottom: 'none', padding: 0 }}>
-                  <div className={styles.emptyState}>
-                    <span className={styles.emptyIcon}>⊘</span>
-                    <p className={styles.emptyTitle}>No feedback found</p>
-                    <p className={styles.emptyHint}>{emptyHint}</p>
-                  </div>
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <tr key={`skel-${i}`}>
+                <td colSpan={7} style={{ padding: '10px 24px' }}>
+                  <div className="skeleton skeletonRow" style={{ height: '40px' }} />
                 </td>
               </tr>
-            ) : (
-              rows
-            )}
-          </tbody>
+            ))
+          ) : filtered.length === 0 ? (
+            /* Existing Empty State */
+            <tr>
+              <td colSpan={7} className={styles.td} style={{ borderBottom: 'none', padding: 0 }}>
+                <div className={styles.emptyState}>
+                  <span className={styles.emptyIcon}>⊘</span>
+                  <p className={styles.emptyTitle}>No feedback found</p>
+                  <p className={styles.emptyHint}>{emptyHint}</p>
+                </div>
+              </td>
+            </tr>
+          ) : rows}
+        </tbody>
         </table>
 
         {/* Table footer */}

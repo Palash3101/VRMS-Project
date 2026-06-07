@@ -122,6 +122,10 @@ export default function VendorPaymentsPage() {
   const [expandedId, setExpandedId]     = useState<number | null>(null);
   const [search, setSearch]             = useState('');
 
+
+  const isLoading = false; // TODO: API — set true while fetching, false on data arrival
+
+
   // ── Derived data ────────────────────────────────────────────────────────────
   const paidItems     = mockPayments.filter(p => p.status === 'paid');
   const pendingItems  = mockPayments.filter(p => p.status === 'pending');
@@ -249,11 +253,20 @@ export default function VendorPaymentsPage() {
               tabIndex={0}
               onKeyDown={e => e.key === 'Enter' && handleTileClick(tile.filterOn)}
             >
-              <span className={styles.statValue}>{tile.value}</span>
-              <span className={styles.statLabel}>
-                {isActive && <span className={styles.statActiveDot} />}
-                {tile.label}
-              </span>
+              {isLoading ? (
+                <div className="skeleton skeletonStat" />
+              ) : (
+                <span className={styles.statValue}>{tile.value}</span>
+              )}
+
+              {isLoading ? (
+                <div className="skeleton skeletonLabel" style={{ width: 56 }} />
+              ) : (
+                <span className={styles.statLabel}>
+                  {isActive && <span className={styles.statActiveDot} />}
+                  {tile.label}
+                </span>
+              )}
             </div>
           );
         })}
@@ -293,7 +306,17 @@ export default function VendorPaymentsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              /* Block D - Skeleton Rows */
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skel-${i}`}>
+                  <td colSpan={8} style={{ padding: '10px 24px' }}>
+                    <div className="skeleton skeletonRow" style={{ height: '40px' }} />
+                  </td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              /* Existing Empty State */
               <tr>
                 <td colSpan={8} className={styles.emptyState}>
                   <div className={styles.emptyContent}>
@@ -309,6 +332,7 @@ export default function VendorPaymentsPage() {
                 </td>
               </tr>
             ) : (
+              /* Existing Data Rows */
               filtered.flatMap((p, idx) => {
                 const isLast     = idx === filtered.length - 1;
                 const isExpanded = expandedId === p.id;
