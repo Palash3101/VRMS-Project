@@ -14,11 +14,12 @@ class Product(models.Model):
         primary_key=True,
         max_length=15
     )
-    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid')  
+    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid', related_name='products')  
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'products'
@@ -41,7 +42,7 @@ class Inquiries(models.Model):
     desc = models.TextField()
     status = models.CharField(max_length=15, choices=[('open', 'Open'), ('in progress', 'In Progress'), ('closed', 'Closed')], default='open')
     created_at = models.DateTimeField(auto_now_add=True)
-    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid')
+    vendorid = models.ForeignKey('user.Vendor', on_delete=models.CASCADE, db_column='vendorid', related_name='inquiries')
 
     class Meta:
         db_table = 'inquiries'

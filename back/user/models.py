@@ -57,6 +57,14 @@ class Vendor(models.Model):
     gst_number = models.CharField(max_length=20)
     status = models.CharField(max_length=9, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending')
     document_path = models.CharField(max_length=255)
+    category = models.CharField(max_length=255, choices=[
+        ('software', 'Software'),
+        ('service providers', 'Service Providers'),
+        ('staffing', 'Staffing'),
+        ('manufacturers', 'Manufacturers'),
+        ('resellers', 'Resellers'),
+    ])
+    rating = models.IntegerField(default=0.0)
     
     class Meta:
         db_table='vendor'
@@ -86,3 +94,22 @@ class Customer(models.Model):
 
     def __str__(self):
         return f"{self.name} (Customer ID: {self.pk})"
+
+
+class ActivityLog(models.Model):
+    activityid = models.CharField(
+        max_length=8, 
+        primary_key=True, 
+        default=lambda: helper.generate_custom_id(8), 
+        editable=False
+    )
+    userid = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userid')
+    action = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = False
+        db_table = 'activity_logs'
+
+    def __str__(self):
+        return f'{self.userid} - {self.action[:50]}'

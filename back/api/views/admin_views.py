@@ -2,9 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsAdmin
+from user.permissions import IsAdmin
 
-from api.serializers import vendor_serializers, order_serializers,customer_serializers
+from user.serializers import vendor_serializers,customer_serializers
+from orders.serializers import order_serializers
 from user.models import Customer, Vendor
 from orders.models import Order
 
