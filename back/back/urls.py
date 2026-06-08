@@ -17,14 +17,15 @@ Including another URLconf
 # from django.contrib import admin
 from django.urls import path, include
 
-from user.views.user_views import SignUpView
+from user.views.user_views import SignUpView, LogoutView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/register/', SignUpView.as_view(), name='sign_up'), 
-    path('api/admin/', include('user.urls.admin_urls')),
-    path('api/vendor/', include('user.urls.vendor_urls')),
-    path('api/customer/', include('user.urls.customer_urls')),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', SignUpView.as_view(), name='sign_up'), 
+    path('logout/', LogoutView.as_view(), name='token_logout'),
+    path('admin/', include('user.urls.admin_urls')),
+    path('vendor/', include('user.urls.vendor_urls')),
+    path('customer/', include('user.urls.customer_urls')),
 ]
