@@ -1,0 +1,775 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Vendor Orders — orders.module.css
+   Week 3 · Day 17
+   All tokens from globals.css. No hardcoded hex. No :root. No font imports.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* ─── Page shell ─────────────────────────────── */
+.page {
+  padding: 40px 48px 80px;
+  max-width: 1200px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-muted); /* Rule #11 — editorial restraint */
+  margin: 0 0 28px;
+}
+
+/* ─── Top row ────────────────────────────────── */
+.topRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* ─── Filter pill group ──────────────────────── */
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  background: var(--color-bg);
+}
+
+.filterTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterTabActive:hover {
+  color: #fff;
+}
+
+.filterCount {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 1px 6px;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+.filterTabActive .filterCount {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ─── Stat strip ─────────────────────────────── */
+/* Rule #12 — one shared border, internal border-right dividers via inline style */
+.statStrip {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: var(--color-bg);
+}
+
+.statTile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.12s ease;
+  text-align: left;
+}
+
+.statTile:hover {
+  background: var(--color-surface);
+}
+
+.statTileActive {
+  background: var(--color-surface);
+}
+
+.statActiveDot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+/* ─── Table wrapper ──────────────────────────── */
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ─── Table header ───────────────────────────── */
+.th {
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  text-align: left;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+/* ─── Table rows ─────────────────────────────── */
+.row {
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+.rowExpanded {
+  background: var(--color-surface);
+}
+
+.td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+/* Last data row — no bottom border before footer */
+.lastRow .td {
+  border-bottom: none;
+}
+
+/* ─── Monospace chip (Rule #15) ──────────────── */
+.monoChip {
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 7px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* ─── Customer cell ──────────────────────────── */
+.customerCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.customerName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* ─── Product name ───────────────────────────── */
+.productName {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+/* ─── Amount cell ────────────────────────────── */
+.amountMain {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.amountSub {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+/* ─── Status badge (Rule #13 — dot + label always) ─ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ─── Row action buttons (Rule #5 — 32px) ───── */
+.actionBtns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acceptBtn {
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.acceptBtn:hover {
+  opacity: 0.82;
+}
+
+.rejectBtn {
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.rejectBtn:hover {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+/* ─── Inline detail row ──────────────────────── */
+/* No modal — inline expansion per impeccable anti-pattern ban */
+.detailRow {
+  background: var(--color-surface);
+}
+
+.detailCell {
+  padding: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.detailRowLast .detailCell {
+  border-bottom: none;
+}
+
+.detailPanel {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px 24px;
+  border-top: 1px solid var(--color-border);
+  gap: 0;
+}
+
+/* ─── Detail sections ────────────────────────── */
+.detailSection {
+  flex: 1;
+  padding: 0 24px;
+  min-width: 0;
+}
+
+.detailSection:first-child {
+  padding-left: 0;
+}
+
+.detailSection:last-child {
+  padding-right: 0;
+}
+
+.detailSectionTitle {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin: 0 0 12px;
+}
+
+.detailField {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.detailField:last-child {
+  margin-bottom: 0;
+}
+
+.detailLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  min-width: 76px;
+  flex-shrink: 0;
+}
+
+.detailValue {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.detailDivider {
+  width: 1px;
+  background: var(--color-border);
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+/* ─── GST breakdown ──────────────────────────── */
+.gstBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.gstRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.gstLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.gstValue {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.gstTotalRow {
+  border-top: 1px solid var(--color-border);
+  padding-top: 7px;
+  margin-top: 1px;
+}
+
+.gstLabelBold {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.gstValueBold {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* ─── Status stepper ─────────────────────────── */
+.stepperSection {
+  flex: 1.6; /* extra room for the 4-step track */
+}
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.stepItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  min-width: 60px;
+}
+
+.stepDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stepLine {
+  flex: 1;
+  height: 1px;
+  margin-top: 4.5px; /* half of 10px dot — centers line on the dot */
+  min-width: 12px;
+  transition: background 0.2s ease;
+}
+
+.stepLabel {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.2s ease;
+}
+
+/* Shown when order was rejected */
+.cancelledNote {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-error);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ─── Empty state (Rule #16) ─────────────────── */
+.emptyCell {
+  padding: 0;
+  border-bottom: none;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 52px 24px;
+  gap: 8px;
+}
+
+.emptyGlyph {
+  font-size: 28px;
+  color: var(--color-border);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.emptyTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.emptyHint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ─── Table footer ───────────────────────────── */
+.tableFooter {
+  padding: 12px 16px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.footerText {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.footerText strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+
+
+
+/* ────────────────────────────────────────────────────
+   WEEK 5 — RESPONSIVE (shared pattern)
+   Paste at bottom of this CSS module.
+   @media (max-width: 767px) = mobile
+   @media (max-width: 479px) = very small screens
+   ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* 1. Page padding */
+  .page {
+    padding: 20px 16px 48px;
+  }
+
+  /* 2. Page header row — stack vertically */
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 3. Stat strip → 2×2 grid
+     Note: !important overrides inline style borderRight applied per tile */
+  .statStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: none;
+    border-radius: 0;
+    gap: 8px;
+    overflow: visible;
+  }
+  .statTile {
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px;
+    min-width: 0;
+  }
+  .statLabel {
+    font-size: 11px;
+  }
+  .statValue {
+    font-size: 20px;
+  }
+
+  /* 4. Filter pills → horizontal scroll */
+  .filterGroup {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+  .filterGroup::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 5. Table → card stacks */
+  .tableWrap {
+    overflow-x: visible;
+  }
+  .tableWrap table {
+    display: block;
+  }
+  .tableWrap thead {
+    display: none;
+  }
+  .tableWrap tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Each row becomes a 2-col card */
+  .tableWrap tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--color-border) !important; /* override table row rule */
+    box-shadow: none;
+  }
+  /* First td — card "title", full width, bold */
+  .tableWrap tbody td:first-child {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2px;
+  }
+  /* Middle tds — 2-col grid, compact */
+  .tableWrap tbody td {
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: none !important;
+    overflow: hidden;
+    min-width: 0;
+  }
+  /* Last td — actions row, full width */
+  .tableWrap tbody td:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2px;
+  }
+  /* flatMap detail rows — hidden on mobile (too complex for small screen) */
+  .detailRow,
+  .detailRowLast {
+    display: none !important;
+  }
+  /* Empty state — reduce padding */
+  .emptyState {
+    padding: 40px 16px;
+  }
+  /* Table footer — stack */
+  .tableFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Very small screens — single column stat strip */
+  .statTile {
+    min-width: calc(50% - 4px);
+  }
+}
+
+
+
+
+
+
+
+
+
+/* vendor/orders/orders.module.css — Week 5 extra */
+@media (max-width: 767px) {
+  /* Accept / Reject buttons — keep them side by side */
+  .acceptBtn,
+  .rejectBtn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Stepper — horizontal scroll */
+  .stepper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+  .stepper::-webkit-scrollbar { display: none; }
+
+  /* Step labels — hide on very small screens to prevent overflow */
+  .stepLabel {
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  /* Detail panel — stack vertically when in detailRow */
+  /* detailRow is already hidden; this applies if you ever show it on mobile */
+  .detailPanel {
+    flex-direction: column;
+    gap: 0;
+  }
+  .detailDivider {
+    width: 100%;
+    height: 1px;
+    min-width: unset;
+    min-height: unset;
+  }
+  .detailSection {
+    min-width: unset;
+    padding: 12px 0;
+  }
+
+  /* GST breakdown inside detail panel */
+  .gstBreakdown {
+    min-width: unset;
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+

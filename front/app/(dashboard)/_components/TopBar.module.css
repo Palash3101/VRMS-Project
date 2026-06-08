@@ -1,0 +1,291 @@
+/*
+ * TopBar.module.css
+ * Shared across Admin, Vendor, Customer dashboards.
+ *
+ * Rules — do not break:
+ *   - No hardcoded hex (use var(--color-*))
+ *   - No Google Fonts import (fonts come from var(--font-display) / var(--font-body))
+ *   - No :root definitions
+ *   - Nav link active state = border-bottom: 2px solid var(--color-primary) flush
+ *     with the bar's bottom edge via margin-bottom: -1px (Rule #6)
+ */
+
+/* ══════════════════════════════════════════
+   TOP BAR SHELL
+   ══════════════════════════════════════════ */
+
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 57px; /* 56px bar + 1px border */
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: stretch; /* stretch so .nav can fill full bar height */
+}
+
+.inner {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ══════════════════════════════════════════
+   LOGO
+   ══════════════════════════════════════════ */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: 28px;
+}
+
+/* Yellow V mark */
+.logoMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: var(--color-primary);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-dark);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.logoWordmark {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.04em;
+}
+
+/* ══════════════════════════════════════════
+   DESKTOP NAV
+   Active pattern: border-bottom flush with bar edge (Rule #6)
+   ══════════════════════════════════════════ */
+
+.nav {
+  display: flex;
+  align-items: stretch;
+  height: 100%; /* fill topBar height so border-bottom is flush */
+  gap: 0;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  /* 2px transparent bottom border reserves space; active state fills it in */
+  border-bottom: 2px solid transparent;
+  /* -1px pulls the border into the topBar's own border, making it flush */
+  margin-bottom: -1px;
+  transition: color 0.14s ease, border-color 0.14s ease;
+}
+
+.navLink:hover {
+  color: var(--color-text);
+}
+
+.navLinkActive {
+  color: var(--color-text);
+  font-weight: 600;
+  border-bottom-color: var(--color-primary);
+}
+
+/* ══════════════════════════════════════════
+   RIGHT CLUSTER — bell + avatar + hamburger
+   ══════════════════════════════════════════ */
+
+.rightCluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Notification bell button */
+.iconBtn {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-muted);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color 0.14s ease, background 0.14s ease;
+}
+
+.iconBtn:hover {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+/* Yellow unread dot on bell */
+.bellDot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-bg);
+  pointer-events: none;
+}
+
+/* User initial avatar */
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  color: #fff; /* white on dark bg — allowed exception */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  cursor: default;
+  user-select: none;
+}
+
+/* ══════════════════════════════════════════
+   HAMBURGER BUTTON
+   Hidden on desktop; revealed at ≤ 767px
+   32px, no border, color: var(--color-text)
+   ══════════════════════════════════════════ */
+
+.hamburger {
+  display: none; /* shown via media query below */
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.14s ease;
+}
+
+.hamburger:hover {
+  background: var(--color-surface);
+}
+
+/* ══════════════════════════════════════════
+   MOBILE DRAWER
+   Slides from top. Full width. z-index: 100.
+   Fixed below the topBar (top: 57px).
+   ══════════════════════════════════════════ */
+
+.drawer {
+  position: fixed;
+  top: 57px;    /* sits flush below the topBar */
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-md);
+
+  /* Slide-in from top */
+  animation: drawerSlideDown 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes drawerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Drawer nav links */
+.drawerLink {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  /* border-bottom applied via inline style prop (all but last) */
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.drawerLink:hover {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.drawerLinkActive {
+  color: var(--color-text);
+  font-weight: 600;
+  background: var(--color-surface);
+}
+
+/* ══════════════════════════════════════════
+   MOBILE BREAKPOINT — ≤ 767px
+   ══════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  .inner {
+    padding: 0 16px;
+  }
+
+  .logo {
+    margin-right: 0; /* logo pushes against rightCluster via margin-left: auto on rightCluster */
+  }
+
+  /* Hide desktop nav — accessible via drawer instead */
+  .nav {
+    display: none;
+  }
+
+  /* Reveal hamburger */
+  .hamburger {
+    display: flex;
+  }
+}

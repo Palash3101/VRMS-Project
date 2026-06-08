@@ -1,0 +1,805 @@
+/* ============================================================
+   feedback.module.css
+   Customer Feedback page — Week 4, Day 26
+   All locked-pattern classes copied verbatim.
+   New classes marked with ─── NEW ───
+   RULES: no hardcoded hex, no :root, no Google Fonts import,
+          all radius via var(--radius-*), all color via var(--color-*)
+   ============================================================ */
+
+/* ─── Layout ─────────────────────────────────────────────── */
+
+.page {
+  padding: 40px;
+  max-width: 1200px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.controlsLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ─── Filter pills ────────────────────────────────────────── */
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  background: var(--color-bg);
+}
+
+.filterTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterTabActive:hover {
+  color: #fff;
+}
+
+.filterCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: rgba(26, 26, 26, 0.08);
+  color: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.filterTabActive .filterCount {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* ─── Search ──────────────────────────────────────────────── */
+
+.searchWrap {
+  position: relative;
+  display: block;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  height: 44px;
+  width: 268px;
+  padding: 0 16px 0 38px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ─── Stat strip ──────────────────────────────────────────── */
+
+.statStrip {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.statTile {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 24px;
+}
+
+.statTileClickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.statTileClickable:hover {
+  background: var(--color-surface);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+
+.statActiveDot {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+}
+
+/* ─── Table ───────────────────────────────────────────────── */
+
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tableHeader {
+  background: var(--color-surface);
+}
+
+.th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.row {
+  transition: background 0.12s;
+  cursor: pointer;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+.td {
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.lastRow .td {
+  border-bottom: none;
+}
+
+/* Detail row — no hover, no extra border-bottom on its td */
+.detailRow {
+  background: var(--color-surface);
+}
+
+.detailRow:hover {
+  background: var(--color-surface);
+}
+
+.detailRowLast .detailPanelTd {
+  /* last detail row: panel border-top is enough, no further border needed */
+}
+
+/* ─── Monospace chip ──────────────────────────────────────── */
+
+.monoChip {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
+  font-size: 12px;
+  font-weight: 400;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  color: var(--color-text);
+  letter-spacing: 0;
+}
+
+/* ─── Avatar cell ─────────────────────────────────────────── */
+
+.avatarCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatarCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatarName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ─── Status badge ────────────────────────────────────────── */
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ─── Expand toggle ───────────────────────────────────────── */
+
+.expandToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: 12px;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.expandToggle:hover {
+  border-color: var(--color-dark);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+/* ─── Detail panel ────────────────────────────────────────── */
+
+.detailPanelTd {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 20px 24px;
+}
+
+.detailRowLast .detailPanelTd {
+  border-bottom: none;
+}
+
+.detailPanelInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.detailSection {
+  flex: 1;
+  padding: 0 24px;
+  min-width: 0;
+}
+
+.detailSection:first-child {
+  padding-left: 0;
+}
+
+.detailSection:last-child {
+  padding-right: 0;
+}
+
+.detailDivider {
+  width: 1px;
+  background: var(--color-border);
+  align-self: stretch;
+  flex-shrink: 0;
+  min-height: 120px;
+}
+
+.detailSectionTitle {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 16px;
+}
+
+.detailField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.detailLabel {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.detailValue {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+/* ─── Empty state ─────────────────────────────────────────── */
+
+.emptyState {
+  text-align: center;
+  padding: 48px 24px;
+  border-bottom: none;
+}
+
+.emptyIcon {
+  font-size: 28px;
+  color: var(--color-border);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.emptyTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.emptyHint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ─── Table footer ────────────────────────────────────────── */
+
+.tableFooter {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* ─── NEW: Interactive star rating input ──────────────────── */
+
+.starRatingInput {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Individual star button inside the input */
+.starBtn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, color 0.08s ease;
+  /* color injected inline from JS */
+}
+
+.starBtn:hover {
+  transform: scale(1.18);
+}
+
+.starBtn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+/* ─── NEW: Read-only star display ─────────────────────────── */
+
+.ratingDisplay {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  user-select: none;
+  /* font-size + color injected inline per star */
+}
+
+.ratingDisplayStar {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ─── NEW: Feedback textarea ──────────────────────────────── */
+
+/* Identical to inquiryTextarea in customer/vendors — renamed for semantic clarity */
+.feedbackTextarea {
+  width: 100%;
+  height: 88px;
+  resize: vertical;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.feedbackTextarea::placeholder {
+  color: var(--color-muted);
+}
+
+.feedbackTextarea:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ─── NEW: Feedback submit button ─────────────────────────── */
+
+/* Identical to downloadBtn in customer/payments — renamed for semantic clarity */
+.feedbackSubmitBtn {
+  width: 100%;
+  height: 44px;
+  background: var(--color-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.feedbackSubmitBtn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.feedbackSubmitBtn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/* ─── NEW: Submitted chip (read-only state indicator) ─────── */
+
+/* Mirrors closedChip pattern established in vendor/inquiries */
+.submittedChip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: default;
+  gap: 6px;
+}
+
+/* ─── NEW: Comment display text ───────────────────────────── */
+
+/* Multi-line body copy inside detail panel — same as descriptionText pattern */
+.descriptionText {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 520px;
+  margin: 0;
+}
+
+/* ─── NEW: Feedback form section container ────────────────── */
+
+.ratingSubmitSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Rating validation hint */
+.ratingHint {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+
+
+/* ────────────────────────────────────────────────────
+   WEEK 5 — RESPONSIVE (shared pattern)
+   Paste at bottom of this CSS module.
+   @media (max-width: 767px) = mobile
+   @media (max-width: 479px) = very small screens
+   ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* 1. Page padding */
+  .page {
+    padding: 20px 16px 48px;
+  }
+
+  /* 2. Page header row — stack vertically */
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 3. Stat strip → 2×2 grid
+     Note: !important overrides inline style borderRight applied per tile */
+  .statStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: none;
+    border-radius: 0;
+    gap: 8px;
+    overflow: visible;
+  }
+  .statTile {
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px;
+    min-width: 0;
+  }
+  .statLabel {
+    font-size: 11px;
+  }
+  .statValue {
+    font-size: 20px;
+  }
+
+  /* 4. Filter pills → horizontal scroll */
+  .filterGroup {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+  .filterGroup::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 5. Table → card stacks */
+  .tableWrap {
+    overflow-x: visible;
+  }
+  .tableWrap table {
+    display: block;
+  }
+  .tableWrap thead {
+    display: none;
+  }
+  .tableWrap tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Each row becomes a 2-col card */
+  .tableWrap tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--color-border) !important; /* override table row rule */
+    box-shadow: none;
+  }
+  /* First td — card "title", full width, bold */
+  .tableWrap tbody td:first-child {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2px;
+  }
+  /* Middle tds — 2-col grid, compact */
+  .tableWrap tbody td {
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: none !important;
+    overflow: hidden;
+    min-width: 0;
+  }
+  /* Last td — actions row, full width */
+  .tableWrap tbody td:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2px;
+  }
+  /* flatMap detail rows — hidden on mobile (too complex for small screen) */
+  .detailRow,
+  .detailRowLast {
+    display: none !important;
+  }
+  /* Empty state — reduce padding */
+  .emptyState {
+    padding: 40px 16px;
+  }
+  /* Table footer — stack */
+  .tableFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Very small screens — single column stat strip */
+  .statTile {
+    min-width: calc(50% - 4px);
+  }
+}
+
+
+
+
+
+
+
+/* customer/feedback/feedback.module.css — Week 5 extra */
+@media (max-width: 767px) {
+  /* Star rating input — slightly larger touch targets on mobile */
+  .starRatingInput {
+    gap: 4px;
+  }
+  .starBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 26px;
+  }
+
+  /* Feedback form — full-width */
+  .feedbackTextarea {
+    width: 100%;
+  }
+  .feedbackSubmitBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Rating display in submitted state */
+  .ratingDisplay {
+    gap: 3px;
+  }
+
+  /* Submitted chip */
+  .submittedChip {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Description text */
+  .descriptionText {
+    max-width: 100%;
+    font-size: 12px;
+  }
+}

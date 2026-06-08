@@ -1,0 +1,635 @@
+/* ─── Page Shell ─────────────────────────────────────────────── */
+.page {
+  padding: 40px 48px 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--color-muted);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.addBtn {
+  height: 44px;
+  padding: 0 20px;
+  background: var(--color-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.addBtn:hover {
+  opacity: 0.85;
+}
+
+/* ─── Toolbar Row ─────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* ─── Filter Pill Group ───────────────────────────────────────── */
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  background: var(--color-bg);
+}
+
+.filterTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterCount {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+/* ─── Search ──────────────────────────────────────────────────── */
+.searchWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: var(--color-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 268px;
+  height: 44px;
+  padding: 0 14px 0 38px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ─── Stat Strip ──────────────────────────────────────────────── */
+.statStrip {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: var(--color-bg);
+}
+
+.statTile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+
+.statTile:hover {
+  background: var(--color-surface);
+}
+
+.statTileActive {
+  background: var(--color-surface);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statActiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  margin-top: 4px;
+}
+
+/* ─── Table Wrapper ───────────────────────────────────────────── */
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── Table ───────────────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* ─── Table Head ──────────────────────────────────────────────── */
+.thead {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.th {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 12px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* ─── Table Body ──────────────────────────────────────────────── */
+.row {
+  transition: background 0.1s ease;
+}
+
+.row:hover .td {
+  background: var(--color-surface);
+}
+
+.td {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  background: var(--color-bg);
+  transition: background 0.1s ease;
+}
+
+.row:last-child .td {
+  border-bottom: none;
+}
+
+/* ─── Lead Cell ───────────────────────────────────────────────── */
+.leadCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.leadInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.leadName {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leadContact {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.followUpPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 2px 7px;
+  margin-top: 3px;
+  width: fit-content;
+}
+
+/* ─── Source Chip (monospace — Rule #15) ─────────────────────── */
+.sourceChip {
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* ─── Badge (Priority + Status) ──────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ─── Assign Select ───────────────────────────────────────────── */
+.assignSelect {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 180px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239B9B9B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.assignSelect:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+.unassigned {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* ─── Row Actions ─────────────────────────────────────────────── */
+.actionsCell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.viewBtn {
+  height: 32px;
+  padding: 0 14px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.viewBtn:hover {
+  border-color: var(--color-dark);
+  color: var(--color-text);
+}
+
+/* ─── Empty State ─────────────────────────────────────────────── */
+.emptyState {
+  text-align: center;
+  padding: 64px 24px;
+}
+
+.emptyGlyph {
+  font-size: 28px;
+  color: var(--color-border);
+  display: block;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.emptyTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.emptyHint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ─── Table Footer ────────────────────────────────────────────── */
+.tableFooter {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+
+
+
+
+/* ────────────────────────────────────────────────────
+   WEEK 5 — RESPONSIVE (shared pattern)
+   Paste at bottom of this CSS module.
+   @media (max-width: 767px) = mobile
+   @media (max-width: 479px) = very small screens
+   ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* 1. Page padding */
+  .page {
+    padding: 20px 16px 48px;
+  }
+
+  /* 2. Page header row — stack vertically */
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 3. Stat strip → 2×2 grid
+     Note: !important overrides inline style borderRight applied per tile */
+  .statStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: none;
+    border-radius: 0;
+    gap: 8px;
+    overflow: visible;
+  }
+  .statTile {
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px;
+    min-width: 0;
+  }
+  .statLabel {
+    font-size: 11px;
+  }
+  .statValue {
+    font-size: 20px;
+  }
+
+  /* 4. Filter pills → horizontal scroll */
+  .filterGroup {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+  .filterGroup::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 5. Table → card stacks */
+  .tableWrap {
+    overflow-x: visible;
+  }
+  .tableWrap table {
+    display: block;
+  }
+  .tableWrap thead {
+    display: none;
+  }
+  .tableWrap tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Each row becomes a 2-col card */
+  .tableWrap tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--color-border) !important; /* override table row rule */
+    box-shadow: none;
+  }
+  /* First td — card "title", full width, bold */
+  .tableWrap tbody td:first-child {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2px;
+  }
+  /* Middle tds — 2-col grid, compact */
+  .tableWrap tbody td {
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: none !important;
+    overflow: hidden;
+    min-width: 0;
+  }
+  /* Last td — actions row, full width */
+  .tableWrap tbody td:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2px;
+  }
+  /* flatMap detail rows — hidden on mobile (too complex for small screen) */
+  .detailRow,
+  .detailRowLast {
+    display: none !important;
+  }
+  /* Empty state — reduce padding */
+  .emptyState {
+    padding: 40px 16px;
+  }
+  /* Table footer — stack */
+  .tableFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Very small screens — single column stat strip */
+  .statTile {
+    min-width: calc(50% - 4px);
+  }
+}
+
+
+
+
+/* admin/leads/leads.module.css — Week 5 extra */
+@media (max-width: 767px) {
+  /* Priority badge — ensure it wraps next to name in card title */
+  .tableWrap tbody td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Assign dropdown — full width in its grid cell */
+  .assignSelect {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Follow-up pill — inline in its cell */
+  .followUpPill,
+  .followUpPillDue,
+  .followUpNone {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+}

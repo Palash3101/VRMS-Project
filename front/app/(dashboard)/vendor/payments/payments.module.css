@@ -1,0 +1,810 @@
+/* ─── Page shell ─────────────────────────────────────────────────────────── */
+
+.page {
+  padding: 32px 40px 80px;
+}
+
+/* ─── Page header ─────────────────────────────────────────────────────────── */
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1;
+}
+
+/* ─── Search input ────────────────────────────────────────────────────────── */
+
+.searchWrap {
+  width: 268px;
+}
+
+.searchLabel {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px 0 38px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted);
+}
+
+.searchInput:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* Hide the native "×" clear button that some browsers inject */
+.searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* ─── Stat strip ──────────────────────────────────────────────────────────── */
+
+.statStrip {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.statTile {
+  flex: 1;
+  padding: 20px 24px;
+  transition: background 0.12s;
+}
+
+.statTileClickable {
+  cursor: pointer;
+}
+
+.statTileClickable:hover {
+  background: var(--color-surface);
+}
+
+.statTileActive {
+  background: var(--color-surface);
+}
+
+.statValue {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.statLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.statActiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* ─── Filter row ──────────────────────────────────────────────────────────── */
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filterGroup {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 2px;
+}
+
+.filterTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color 0.12s;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filterCount {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+/* ─── Table wrapper ───────────────────────────────────────────────────────── */
+
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ─── Table head ──────────────────────────────────────────────────────────── */
+
+.th {
+  padding: 12px 16px;
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+/* ─── Table rows ──────────────────────────────────────────────────────────── */
+
+.row {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+/* Last non-expanded row — removes td border-bottom to stay clean against footer */
+.lastRow {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.lastRow:hover {
+  background: var(--color-surface);
+}
+
+.lastRow .td {
+  border-bottom: none;
+}
+
+/* Expanded data row — keeps surface tint while detail panel is open */
+.rowExpanded {
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.rowExpanded:hover {
+  background: var(--color-surface);
+}
+
+/* ─── Table cells ─────────────────────────────────────────────────────────── */
+
+.td {
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+/* ─── Monospace chip — Rule #15 ───────────────────────────────────────────── */
+
+.monoChip {
+  font-family: ui-monospace, 'Cascadia Mono', 'Menlo', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* ─── Customer avatar cell ────────────────────────────────────────────────── */
+
+.customerCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.customerName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.customerContact {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 1px;
+  line-height: 1;
+}
+
+/* ─── Amount cell (right-aligned, GST sub-line) — NEW ─────────────────────── */
+
+.amountCell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.amountValue {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.gstSubline {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* ─── Total value — NEW ───────────────────────────────────────────────────── */
+
+.totalValue {
+  font-family: ui-monospace, 'Cascadia Mono', 'Menlo', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* ─── Mode chip — NEW (neutral, no tint — same shape as sourceChip) ────────── */
+
+.modeChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+/* ─── Status badge (dot + label) ─────────────────────────────────────────── */
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ─── Empty state ─────────────────────────────────────────────────────────── */
+
+.emptyState {
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.emptyIcon {
+  font-size: 28px;
+  color: var(--color-border);
+  line-height: 1;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.emptyTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+}
+
+.emptyHint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  display: block;
+}
+
+.clearFilterBtn {
+  height: 32px;
+  padding: 0 14px;
+  margin-top: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.clearFilterBtn:hover {
+  color: var(--color-text);
+  border-color: var(--color-dark);
+}
+
+/* ─── Table footer ────────────────────────────────────────────────────────── */
+
+.tableFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.clearFilter {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.12s;
+}
+
+.clearFilter:hover {
+  color: var(--color-text);
+}
+
+/* ─── Inline detail panel (flatMap pattern) ───────────────────────────────── */
+
+.detailPanel {
+  padding: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Last visible row: no bottom border before the footer */
+.detailPanelLast {
+  border-bottom: none;
+}
+
+.detailSections {
+  display: flex;
+  align-items: stretch;
+  padding: 20px 24px;
+}
+
+.detailSection {
+  flex: 1;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.detailSection:first-child {
+  padding-left: 0;
+}
+
+.detailSection:last-child {
+  padding-right: 0;
+}
+
+.detailDivider {
+  width: 1px;
+  background: var(--color-border);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.detailSectionTitle {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+
+.detailField {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.detailKey {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.detailValue {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-text);
+  text-align: right;
+  word-break: break-word;
+}
+
+.detailMuted {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Reference No chip in detail panel — NEW ────────────────────────────────── */
+
+.referenceNo {
+  font-family: ui-monospace, 'Cascadia Mono', 'Menlo', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+/* ─── GST Breakdown (verbatim from vendor/orders — DO NOT modify) ─────────── */
+
+.gstBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 4px;
+}
+
+.gstRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.gstRow span:first-child {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.gstValue {
+  font-family: ui-monospace, 'Cascadia Mono', 'Menlo', monospace;
+  font-size: 12px;
+  color: var(--color-text);
+}
+
+.gstTotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 2px;
+  border-top: 1px solid var(--color-border);
+  margin-top: 2px;
+}
+
+.gstTotalRow span:first-child {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.gstTotalValue {
+  font-family: ui-monospace, 'Cascadia Mono', 'Menlo', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+
+
+
+/* ────────────────────────────────────────────────────
+   WEEK 5 — RESPONSIVE (shared pattern)
+   Paste at bottom of this CSS module.
+   @media (max-width: 767px) = mobile
+   @media (max-width: 479px) = very small screens
+   ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* 1. Page padding */
+  .page {
+    padding: 20px 16px 48px;
+  }
+
+  /* 2. Page header row — stack vertically */
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 3. Stat strip → 2×2 grid
+     Note: !important overrides inline style borderRight applied per tile */
+  .statStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: none;
+    border-radius: 0;
+    gap: 8px;
+    overflow: visible;
+  }
+  .statTile {
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px;
+    min-width: 0;
+  }
+  .statLabel {
+    font-size: 11px;
+  }
+  .statValue {
+    font-size: 20px;
+  }
+
+  /* 4. Filter pills → horizontal scroll */
+  .filterGroup {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+  .filterGroup::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 5. Table → card stacks */
+  .tableWrap {
+    overflow-x: visible;
+  }
+  .tableWrap table {
+    display: block;
+  }
+  .tableWrap thead {
+    display: none;
+  }
+  .tableWrap tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Each row becomes a 2-col card */
+  .tableWrap tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--color-border) !important; /* override table row rule */
+    box-shadow: none;
+  }
+  /* First td — card "title", full width, bold */
+  .tableWrap tbody td:first-child {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2px;
+  }
+  /* Middle tds — 2-col grid, compact */
+  .tableWrap tbody td {
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: none !important;
+    overflow: hidden;
+    min-width: 0;
+  }
+  /* Last td — actions row, full width */
+  .tableWrap tbody td:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2px;
+  }
+  /* flatMap detail rows — hidden on mobile (too complex for small screen) */
+  .detailRow,
+  .detailRowLast {
+    display: none !important;
+  }
+  /* Empty state — reduce padding */
+  .emptyState {
+    padding: 40px 16px;
+  }
+  /* Table footer — stack */
+  .tableFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Very small screens — single column stat strip */
+  .statTile {
+    min-width: calc(50% - 4px);
+  }
+}
+
+
+
+
+
+
+
+
+/* vendor/payments/payments.module.css — Week 5 extra */
+@media (max-width: 767px) {
+  /* Amount cell — left-align in card (not right-aligned like on desktop) */
+  .amountCell {
+    align-items: flex-start;
+  }
+  .gstSubline {
+    font-size: 10px;
+  }
+
+  /* Total value — slightly smaller */
+  .totalValue {
+    font-size: 13px;
+  }
+
+  /* Mode chip */
+  .modeChip {
+    font-size: 11px;
+  }
+
+  /* Reference number mono chip — truncate if long */
+  .referenceNo {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

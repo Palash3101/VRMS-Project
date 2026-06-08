@@ -1,0 +1,653 @@
+/* ─────────────────────────────────────────────────────────
+   Admin → Vendors page
+   All colors via var(--color-*) from globals.css.
+   All radii via var(--radius-*).
+   All shadows via var(--shadow-*).
+   Rule: no hardcoded hex except rgba() for box-shadow overlays.
+   ───────────────────────────────────────────────────────── */
+
+/* ── Layout ─────────────────────────────────────────────── */
+
+.page {
+  padding: 48px 48px 96px;
+  max-width: 1160px;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.headerLeft {
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 480px;
+}
+
+.addBtn {
+  height: 44px;
+  padding: 0 20px;
+  background: var(--color-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+.addBtn:hover {
+  opacity: 0.82;
+}
+
+.addBtn:active {
+  opacity: 0.7;
+}
+
+/* ── Stat strip ──────────────────────────────────────────── */
+/* One shared border, tiles separated by internal border-right.
+   Clickable — clicking a tile also sets the active filter.       */
+
+.statStrip {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.statTile {
+  flex: 1;
+  padding: 22px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s ease;
+}
+
+.statTile:hover {
+  background: rgba(26, 26, 26, 0.025);
+}
+
+.statTileActive {
+  background: rgba(26, 26, 26, 0.03);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 500;
+}
+
+/* Yellow dot that appears on the active stat tile */
+.statActiveDot {
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  width: 20px;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 2px 2px 0 0;
+}
+
+/* ── Controls row ────────────────────────────────────────── */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* ── Filter pill group ───────────────────────────────────── */
+
+.filterGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  background: var(--color-bg);
+}
+
+.filterTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.filterTab:hover {
+  color: var(--color-text);
+}
+
+.filterTabActive {
+  background: var(--color-dark);
+  color: #fff;
+}
+
+.filterTabActive .filterCount {
+  opacity: 0.55;
+}
+
+.filterCount {
+  font-size: 11px;
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Search ──────────────────────────────────────────────── */
+
+.searchWrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 13px;
+  color: var(--color-muted);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.search {
+  height: 44px;
+  width: 268px;
+  padding: 0 16px 0 36px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  /* Cancel browser default search-input chrome */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search::placeholder {
+  color: var(--color-muted);
+}
+
+.search:focus {
+  border-color: var(--color-dark);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+/* ── Table wrapper ───────────────────────────────────────── */
+
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Column sizing */
+.table colgroup col:nth-child(1) { width: 32%; }
+.table colgroup col:nth-child(2) { width: 22%; }
+.table colgroup col:nth-child(3) { width: 12%; }
+.table colgroup col:nth-child(4) { width: 14%; }
+.table colgroup col:nth-child(5) { width: 20%; }
+
+/* ── Table head ──────────────────────────────────────────── */
+
+.th {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 13px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  white-space: nowrap;
+}
+
+/* ── Table rows ──────────────────────────────────────────── */
+
+.row {
+  transition: background 0.1s ease;
+}
+
+.row:hover {
+  background: var(--color-surface);
+}
+
+.td {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  font-family: var(--font-body);
+}
+
+.row:last-child .td {
+  border-bottom: none;
+}
+
+/* ── Company cell ────────────────────────────────────────── */
+
+.companyCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-dark);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.companyName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.companyContact {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── GST chip ────────────────────────────────────────────── */
+
+.gstChip {
+  display: inline-block;
+  font-family: 'DM Mono', 'Courier New', ui-monospace, monospace;
+  font-size: 11.5px;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+
+/* ── Date text ───────────────────────────────────────────── */
+
+.dateText {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ── Status badge ────────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ── Action buttons ──────────────────────────────────────── */
+/* Row actions: 32px height, NOT 44px (44px is for primary CTAs) */
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btnApprove,
+.btnReject,
+.btnView {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+
+.btnApprove {
+  background: var(--color-dark);
+  color: #fff;
+  border: 1px solid var(--color-dark);
+}
+
+.btnApprove:hover {
+  opacity: 0.8;
+}
+
+.btnReject {
+  background: transparent;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+
+.btnReject:hover {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.btnView {
+  background: transparent;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+
+.btnView:hover {
+  color: var(--color-text);
+  border-color: var(--color-muted);
+}
+
+/* ── Table footer ────────────────────────────────────────── */
+
+.tableFooter {
+  padding: 12px 20px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+
+.emptyCell {
+  padding: 72px 20px;
+  text-align: center;
+  border-bottom: none;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.emptyGlyph {
+  font-size: 28px;
+  color: var(--color-border);
+  line-height: 1;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.emptyTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.emptyHint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+
+
+/* ────────────────────────────────────────────────────
+   WEEK 5 — RESPONSIVE (shared pattern)
+   Paste at bottom of this CSS module.
+   @media (max-width: 767px) = mobile
+   @media (max-width: 479px) = very small screens
+   ──────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* 1. Page padding */
+  .page {
+    padding: 20px 16px 48px;
+  }
+
+  /* 2. Page header row — stack vertically */
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* 3. Stat strip → 2×2 grid
+     Note: !important overrides inline style borderRight applied per tile */
+  .statStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: none;
+    border-radius: 0;
+    gap: 8px;
+    overflow: visible;
+  }
+  .statTile {
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px;
+    min-width: 0;
+  }
+  .statLabel {
+    font-size: 11px;
+  }
+  .statValue {
+    font-size: 20px;
+  }
+
+  /* 4. Filter pills → horizontal scroll */
+  .filterGroup {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+  .filterGroup::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 5. Table → card stacks */
+  .tableWrap {
+    overflow-x: visible;
+  }
+  .tableWrap table {
+    display: block;
+  }
+  .tableWrap thead {
+    display: none;
+  }
+  .tableWrap tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* Each row becomes a 2-col card */
+  .tableWrap tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-bottom: 1px solid var(--color-border) !important; /* override table row rule */
+    box-shadow: none;
+  }
+  /* First td — card "title", full width, bold */
+  .tableWrap tbody td:first-child {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2px;
+  }
+  /* Middle tds — 2-col grid, compact */
+  .tableWrap tbody td {
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: none !important;
+    overflow: hidden;
+    min-width: 0;
+  }
+  /* Last td — actions row, full width */
+  .tableWrap tbody td:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2px;
+  }
+  /* flatMap detail rows — hidden on mobile (too complex for small screen) */
+  .detailRow,
+  .detailRowLast {
+    display: none !important;
+  }
+  /* Empty state — reduce padding */
+  .emptyState {
+    padding: 40px 16px;
+  }
+  /* Table footer — stack */
+  .tableFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Very small screens — single column stat strip */
+  .statTile {
+    min-width: calc(50% - 4px);
+  }
+}
+
+
+
+
+
+/* admin/vendors/vendors.module.css — Week 5 extra */
+@media (max-width: 767px) {
+  /* Status filter tabs (if using pill-tab variant) */
+  .statusTabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .statusTabs::-webkit-scrollbar { display: none; }
+
+  /* Approve / Reject buttons in actions cell — already in last-child flex row */
+  /* Ensure they don't shrink below readable size */
+  .approveBtn,
+  .rejectBtn {
+    flex-shrink: 0;
+  }
+}
