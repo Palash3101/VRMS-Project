@@ -12,3 +12,9 @@ class EditInquirySerializerVendor(serializers.ModelSerializer):
         model = Inquiries
         fields = '__all__'
         read_only_fields = ['inquiryid', 'vendorid', 'customerid', 'productid', 'created_at', 'subject', 'desc']
+
+
+class PostInquirySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inquiries
+        fields = '__all__'

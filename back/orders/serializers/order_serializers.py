@@ -11,9 +11,6 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
-
-
-
     
 class OrderDetailSerializer(serializers.ModelSerializer):
     
@@ -40,11 +37,17 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ['orderid', 'customerid']
 
 
-
-
-
 class ViewOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         read_only_fields = ['orderid', 'customerid', 'productid', 'created_at', 'payment_ref_id']
         exclude = ['vendorid']
+
+
+class OrderDetailSerializerCustomer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        exclude = ['customerid']
+
+    

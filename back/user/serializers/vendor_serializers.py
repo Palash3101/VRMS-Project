@@ -28,7 +28,19 @@ class VendorProfileSerializer(serializers.ModelSerializer):
         exclude = ['vendorid']  
         
     
-    
+class VendorListSerializerCustomer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendor
+        exclude=['status']
 
 
+class VendorDetailSerializerCustomer(serializers.ModelSerializer):
+    products = product_serializers.ProductDetailSerializerSmall(many=True, read_only=True)
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+    class Meta:
+        model = Vendor
+        exclude = ['vendorid', 'status', 'document_path']  
         

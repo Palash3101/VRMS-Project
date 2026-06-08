@@ -57,6 +57,14 @@ class Vendor(models.Model):
     gst_number = models.CharField(max_length=20)
     status = models.CharField(max_length=9, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending')
     document_path = models.CharField(max_length=255)
+    category = models.CharField(max_length=255, choices=[
+        ('software', 'Software'),
+        ('service providers', 'Service Providers'),
+        ('staffing', 'Staffing'),
+        ('manufacturers', 'Manufacturers'),
+        ('resellers', 'Resellers'),
+    ])
+    rating = models.IntegerField(default=0.0)
     
     class Meta:
         db_table='vendor'

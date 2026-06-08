@@ -21,10 +21,10 @@ from user.views.user_views import SignUpView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('register/', SignUpView.as_view(), name='sign_up'), 
-    path('admin/', include('user.urls.admin_urls')),
-    path('vendor/', include('user.urls.vendor_urls')),
-    # path('customer/', include('user.urls')),
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/register/', SignUpView.as_view(), name='sign_up'), 
+    path('api/admin/', include('user.urls.admin_urls')),
+    path('api/vendor/', include('user.urls.vendor_urls')),
+    path('api/customer/', include('user.urls.customer_urls')),
 ]
