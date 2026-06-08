@@ -1,6 +1,7 @@
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.hashers import check_password, make_password
 from django.db.models import Q
+from django.contrib.auth.signals import user_logged_in
 from .models import User
 
 class CustomAuth(BaseBackend):
@@ -18,6 +19,7 @@ class CustomAuth(BaseBackend):
 
 
         if check_password(password, user.password):
+            user_logged_in.send(sender=user.__class__, request=request, user=user)
             return user
                 
         return None
